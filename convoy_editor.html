@@ -478,6 +478,8 @@ const state = {
   // Undo
   undoStack: [], redoStack: [],
   modified: false,
+  loadedFileName: '',
+  fileHandle: null,
 };
 
 const TERRITORY_COLORS = {
@@ -658,38 +660,208 @@ function getVal(obj, name) {
 // =====================================================
 // XML SERIALIZATION (save back changes)
 // =====================================================
-function saveXml() {
+
+// Generate random 8-char uppercase hex ID
+function genHexId() {
+  const arr = new Uint8Array(4);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
+// Collect all existing IDs in the XML to avoid collisions
+function collectExistingIds(doc) {
+  const ids = new Set();
+  for (const obj of doc.querySelectorAll('object')) {
+    const oid = obj.getAttribute('id');
+    if (oid) ids.add(oid.toUpperCase());
+  }
+  for (const v of doc.querySelectorAll('value[type="objectid"]')) {
+    const parts = v.textContent.split(',');
+    if (parts[0]) ids.add(parts[0].trim().toUpperCase());
+  }
+  return ids;
+}
+
+function genUniqueHexId(existingIds) {
+  let id;
+  do { id = genHexId(); } while (existingIds.has(id));
+  existingIds.add(id);
+  return id;
+}
+
+// Helper to create XML value element (always produces <value ...></value>, never self-closing)
+function xmlVal(doc, attrs, text) {
+  const v = doc.createElement('value');
+  for (const [k, val] of Object.entries(attrs)) v.setAttribute(k, val);
+  v.appendChild(doc.createTextNode(text || ''));
+  return v;
+}
+
+// Build a pretty-printed object element with proper indentation
+function buildXmlObject(doc, id, values, indent) {
+  const obj = doc.createElement('object');
+  obj.setAttribute('id', id);
+  const inner = indent + '\t';
+  for (const val of values) {
+    obj.appendChild(doc.createTextNode('\n' + inner));
+    obj.appendChild(val);
+  }
+  obj.appendChild(doc.createTextNode('\n' + indent));
+  return obj;
+}
+
+// Build rotation matrix from two adjacent points (direction-based)
+function buildRotationFromNeighbors(prevPt, nextPt) {
+  // Forward direction vector (in XZ plane)
+  let fx = nextPt.x - prevPt.x;
+  let fz = nextPt.z - prevPt.z;
+  const len = Math.sqrt(fx * fx + fz * fz);
+  if (len < 0.001) return '1,0,0,0,0,1,0,0,0,0,1,0';
+  fx /= len; fz /= len;
+  // Right = cross(forward, up) where up = (0,1,0)
+  // forward = (fx, 0, fz), right = (fz, 0, -fx)
+  return `${fz},0,${-fx},0,0,1,0,0,${fx},0,${fz},0`;
+}
+
+async function saveXml() {
   if (!state.xmlString) return;
 
   try {
-    let xmlStr = state.xmlString;
+    const doc = state.xmlDoc;
+    const rootObj = doc.querySelector('object > object[name="root"]');
+    const existingIds = collectExistingIds(doc);
 
-    // For each convoy, update moved point positions in the XML string
+    // 1. Update existing point positions and names in DOM
     for (const convoy of state.convoys) {
       for (const pt of convoy.points) {
-        if (!pt.npObj) continue; // skip newly added points (no DOM ref)
-
-        // Find the world value for this named point
+        if (!pt.npObj) continue;
+        // Update name in CNamedPoint (may have been renumbered)
+        const nameVal = pt.npObj.querySelector('value[name="name"]');
+        if (nameVal) nameVal.textContent = pt.name;
+        // Update coordinates
         const worldVal = pt.npObj.querySelector('value[name="world"]');
         if (!worldVal) continue;
-
-        const oldWorld = worldVal.textContent;
-        const parts = oldWorld.split(',').map(s => s.trim());
+        const parts = worldVal.textContent.split(',').map(s => s.trim());
         if (parts.length < 16) continue;
-
-        // Build new world string with updated position
         parts[12] = ' ' + pt.x.toFixed(4);
         parts[13] = pt.y.toFixed(4);
         parts[14] = pt.z.toFixed(4);
-        const newWorld = parts.join(',');
-
-        // Update in DOM (for consistency)
-        worldVal.textContent = newWorld;
-
-        // Update in the raw XML string
-        xmlStr = xmlStr.replace(oldWorld, newWorld);
+        worldVal.textContent = parts.join(',');
       }
     }
+
+    // 2. Create XML elements for new points and route entries
+    for (const convoy of state.convoys) {
+      if (!convoy.routeListObj) continue;
+
+      for (let i = 0; i < convoy.points.length; i++) {
+        const pt = convoy.points[i];
+        if (pt.npObj) continue; // already exists in XML
+
+        // Generate unique IDs
+        const npObjId = genUniqueHexId(existingIds);
+        const npObjectId = genUniqueHexId(existingIds);
+        const npAlias = genUniqueHexId(existingIds);
+        const entryObjId = genUniqueHexId(existingIds);
+        const entryObjectId = genUniqueHexId(existingIds);
+
+        // Assign proper name: routeName_napN (1-based index)
+        pt.name = `${convoy.routeName}_nap${i + 1}`;
+
+        // Build rotation from neighbors
+        const prevPt = convoy.points[(i - 1 + convoy.points.length) % convoy.points.length];
+        const nextPt = convoy.points[(i + 1) % convoy.points.length];
+        const rotation = buildRotationFromNeighbors(prevPt, nextPt);
+
+        // Create CNamedPoint element (indent: 3 tabs in root)
+        const npEl = buildXmlObject(doc, npObjId, [
+          xmlVal(doc, { name: '_class', type: 'string' }, 'CNamedPoint'),
+          xmlVal(doc, { name: '_class_hash', type: 'int' }, '-650404390'),
+          xmlVal(doc, { name: '_object_id', type: 'objectid' }, `${npObjectId},0`),
+          xmlVal(doc, { name: 'alias', type: 'objectid' }, `${npAlias},0`),
+          xmlVal(doc, { name: 'disable_event', type: 'vec_events' }),
+          xmlVal(doc, { name: 'enable_event', type: 'vec_events' }),
+          xmlVal(doc, { name: 'enabled_from_start', type: 'int' }, '1'),
+          xmlVal(doc, { name: 'name', type: 'string' }, pt.name),
+          xmlVal(doc, { name: 'tags', type: 'vec_int' }),
+          xmlVal(doc, { name: 'world', type: 'mat' }, `${rotation}, ${pt.x.toFixed(4)},${pt.y.toFixed(4)},${pt.z.toFixed(4)},1`),
+        ], '\t\t\t');
+
+        // Insert CNamedPoint into root (before the MoverObjects)
+        rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), convoy.moverObj);
+        rootObj.insertBefore(npEl, convoy.moverObj);
+
+        // Create SGameObjectOrderedListEntry element (indent: 5 tabs in Route list)
+        const refVal = xmlVal(doc, { type: 'string' }, pt.name);
+        refVal.setAttribute('id', '8E4189F6');
+        const entryEl = buildXmlObject(doc, entryObjId, [
+          xmlVal(doc, { name: '_class', type: 'string' }, 'SGameObjectOrderedListEntry'),
+          xmlVal(doc, { name: '_class_hash', type: 'int' }, '-685330639'),
+          xmlVal(doc, { name: '_object_id', type: 'objectid' }, `${entryObjectId},0`),
+          xmlVal(doc, { name: 'name', type: 'string' }, `OrderedEntry.Point${i + 1}`),
+          xmlVal(doc, { name: 'tags', type: 'vec_int' }),
+          refVal,
+        ], '\t\t\t\t\t');
+
+        // Add entry to the Route list
+        convoy.routeListObj.appendChild(doc.createTextNode('\n\t\t\t\t\t'));
+        convoy.routeListObj.appendChild(entryEl);
+
+        // Update point references so subsequent saves work correctly
+        pt.npObj = npEl;
+        pt.entryObj = entryEl;
+
+        // Register in namedPoints
+        state.namedPoints[pt.name] = { x: pt.x, y: pt.y, z: pt.z, obj: npEl };
+      }
+
+      // 3. Renumber existing route entries to match current order
+      for (let i = 0; i < convoy.points.length; i++) {
+        const pt = convoy.points[i];
+        if (!pt.entryObj) continue;
+        // Update OrderedEntry.PointN name
+        const nameVal = pt.entryObj.querySelector('value[name="name"]');
+        if (nameVal) nameVal.textContent = `OrderedEntry.Point${i + 1}`;
+        // Update point reference
+        for (const v of pt.entryObj.querySelectorAll('value')) {
+          if (v.getAttribute('id') === '8E4189F6') {
+            v.textContent = pt.name;
+            break;
+          }
+        }
+      }
+    }
+
+    // 4. Handle deleted points: remove orphaned route entries
+    for (const convoy of state.convoys) {
+      if (!convoy.routeListObj) continue;
+      const currentNames = new Set(convoy.points.map(p => p.name));
+      const entriesToRemove = [];
+      for (const entry of convoy.routeListObj.children) {
+        if (getVal(entry, '_class') !== 'SGameObjectOrderedListEntry') continue;
+        let pointRef = '';
+        for (const v of entry.querySelectorAll('value')) {
+          if (v.getAttribute('id') === '8E4189F6') { pointRef = v.textContent; break; }
+        }
+        if (pointRef && !currentNames.has(pointRef)) {
+          entriesToRemove.push(entry);
+        }
+      }
+      for (const entry of entriesToRemove) {
+        convoy.routeListObj.removeChild(entry);
+      }
+    }
+
+    // 5. Ensure all empty elements have a text node (prevents self-closing tags)
+    for (const el of doc.querySelectorAll('value, object')) {
+      if (!el.childNodes.length) {
+        el.appendChild(doc.createTextNode(''));
+      }
+    }
+
+    // 6. Serialize DOM back to XML string
+    const serializer = new XMLSerializer();
+    let xmlStr = serializer.serializeToString(doc);
 
     // Ensure XML declaration
     if (!xmlStr.startsWith('<?xml')) {
@@ -699,20 +871,38 @@ function saveXml() {
     // Update stored string
     state.xmlString = xmlStr;
 
-    // Download file
+    // Save file with "Save As" dialog
     const blob = new Blob([xmlStr], { type: 'application/xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'convoys.xml';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    if (window.showSaveFilePicker) {
+      // Modern File System Access API — always shows "Save As" dialog
+      const handle = await window.showSaveFilePicker({
+        suggestedName: state.loadedFileName || 'convoys.xml',
+        types: [{
+          description: 'XML Files',
+          accept: { 'application/xml': ['.xml'] }
+        }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      state.fileHandle = handle;
+      state.loadedFileName = handle.name;
+    } else {
+      // Fallback for browsers without File System Access API
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = state.loadedFileName || 'convoys.xml';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
 
     state.modified = false;
     updateStatus();
-    toast('Saved convoys.xml');
+    toast('Saved ' + (state.loadedFileName || 'convoys.xml'));
   } catch (err) {
     console.error('Save error:', err);
     toast('Error saving: ' + err.message);
@@ -891,7 +1081,16 @@ function deletePoint(ci, pi) {
   const convoy = state.convoys[ci];
   if (convoy.points.length <= 2) { toast('Convoy must have at least 2 points'); return; }
   pushUndo('Delete point');
-  convoy.points.splice(pi, 1);
+  const removed = convoy.points.splice(pi, 1)[0];
+  // Remove from XML DOM if it exists there
+  if (removed.npObj && removed.npObj.parentNode) {
+    removed.npObj.parentNode.removeChild(removed.npObj);
+  }
+  if (removed.entryObj && removed.entryObj.parentNode) {
+    removed.entryObj.parentNode.removeChild(removed.entryObj);
+  }
+  // Remove from namedPoints
+  delete state.namedPoints[removed.name];
   renumberPoints(convoy);
   if (state.selectedPointIdx >= convoy.points.length) state.selectedPointIdx = convoy.points.length - 1;
   updateProps();
@@ -959,7 +1158,7 @@ function addPointAtWorld(ci, wx, wz) {
 
 function renumberPoints(convoy) {
   convoy.points.forEach((p, i) => {
-    // Keep original names for existing points, only rename new ones
+    p.name = `${convoy.routeName}_nap${i + 1}`;
   });
 }
 
@@ -1494,6 +1693,7 @@ $('ctxDuplicate').addEventListener('click', () => {
       entryObj: null, npObj: null,
     };
     convoy.points.splice(ctxPoint + 1, 0, newPt);
+    renumberPoints(convoy);
     state.selectedPointIdx = ctxPoint + 1;
     updateProps(); render();
     toast('Point duplicated');
@@ -1515,6 +1715,8 @@ $('btnOpen').addEventListener('click', () => $('fileInput').click());
 $('fileInput').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
+  state.loadedFileName = file.name;
+  state.fileHandle = null;
   const reader = new FileReader();
   reader.onload = (ev) => parseConvoysXml(ev.target.result);
   reader.readAsText(file);
@@ -1573,6 +1775,8 @@ wrap.addEventListener('drop', (e) => {
   const file = e.dataTransfer.files[0];
   if (!file) return;
   if (file.name.endsWith('.xml')) {
+    state.loadedFileName = file.name;
+    state.fileHandle = null;
     const reader = new FileReader();
     reader.onload = (ev) => parseConvoysXml(ev.target.result);
     reader.readAsText(file);
