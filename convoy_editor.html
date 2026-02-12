@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mad Max — Convoy Route Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0c;
+  --panel: #111114;
+  --panel-border: #1e1e24;
+  --text: #c8c5b8;
+  --text-dim: #6b6860;
+  --text-bright: #e8e5d8;
+  --accent: #d4842a;
+  --accent-glow: #f0a030;
+  --danger: #c0392b;
+  --jeet: #3498db;
+  --gutgash: #e67e22;
+  --pinkeye: #9b59b6;
+  --mm3030: #e74c3c;
+  --selected: #f1c40f;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  user-select: none;
+}
+
+/* TOP BAR */
+.topbar {
+  height: 42px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  z-index: 100;
+  position: relative;
+}
+
+.topbar .logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-right: 16px;
+  white-space: nowrap;
+}
+
+.topbar .logo span { color: var(--text-dim); font-weight: 400; }
+
+.btn {
+  background: #1a1a1f;
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  padding: 5px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: #222228; border-color: var(--accent); color: var(--text-bright); }
+.btn.primary { background: var(--accent); color: #000; border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-glow); }
+.btn.danger { border-color: var(--danger); color: var(--danger); }
+.btn.danger:hover { background: var(--danger); color: #fff; }
+
+.topbar .sep { width: 1px; height: 24px; background: var(--panel-border); margin: 0 4px; }
+
+.topbar .status {
+  margin-left: auto;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* LAYOUT */
+.main {
+  display: flex;
+  height: calc(100vh - 42px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--panel);
+  border-right: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 10px 12px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-header .count {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent);
+}
+
+.convoy-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.convoy-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #1a1a1f;
+  cursor: pointer;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.convoy-item:hover { background: #18181d; }
+.convoy-item.active { background: #1c1c22; border-left: 3px solid var(--accent); }
+
+.convoy-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.convoy-item .info { flex: 1; min-width: 0; }
+
+.convoy-item .name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.convoy-item .meta {
+  font-size: 11px;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text-dim);
+}
+
+.convoy-item .vis-toggle {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.convoy-item .vis-toggle:hover { color: var(--text-bright); }
+.convoy-item .vis-toggle.hidden { opacity: 0.3; }
+
+/* PROPERTIES PANEL */
+.props-panel {
+  border-top: 1px solid var(--panel-border);
+  max-height: 260px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.props-panel .props-header {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  background: #0e0e11;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.prop-row {
+  display: flex;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid #151518;
+  align-items: center;
+}
+
+.prop-row .prop-label {
+  width: 60px;
+  color: var(--text-dim);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.prop-row input {
+  flex: 1;
+  background: #0c0c0e;
+  border: 1px solid var(--panel-border);
+  color: var(--text-bright);
+  padding: 3px 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  width: 100%;
+}
+
+.prop-row input:focus { outline: none; border-color: var(--accent); }
+
+.prop-actions {
+  padding: 8px 12px;
+  display: flex;
+  gap: 6px;
+}
+
+/* CANVAS AREA */
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #08080a;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* MINIMAP */
+.minimap {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 160px;
+  height: 160px;
+  background: rgba(10, 10, 12, 0.85);
+  border: 1px solid var(--panel-border);
+  z-index: 10;
+}
+
+.minimap canvas { width: 100%; height: 100%; }
+
+/* COORD DISPLAY */
+.coords {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: rgba(10, 10, 12, 0.85);
+  padding: 4px 10px;
+  border: 1px solid var(--panel-border);
+  z-index: 10;
+}
+
+/* TOOLS */
+.toolbar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+}
+
+.tool-btn {
+  width: 34px;
+  height: 34px;
+  background: rgba(17, 17, 20, 0.9);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.15s;
+}
+
+.tool-btn:hover { border-color: var(--accent); color: var(--text-bright); }
+.tool-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* CONTEXT MENU */
+.ctx-menu {
+  position: absolute;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  z-index: 200;
+  min-width: 180px;
+  display: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.ctx-menu.show { display: block; }
+
+.ctx-item {
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.ctx-item:hover { background: #1a1a1f; color: var(--text-bright); }
+.ctx-item.danger { color: var(--danger); }
+.ctx-item.danger:hover { background: rgba(192,57,43,0.15); }
+.ctx-sep { height: 1px; background: var(--panel-border); margin: 2px 0; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  color: var(--text-bright);
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* FILE DROP OVERLAY */
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,12,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 250;
+  border: 3px dashed var(--accent);
+}
+
+.drop-overlay.show { display: flex; }
+
+.drop-overlay .drop-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* HIDDEN FILE INPUTS */
+input[type="file"] { display: none; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a40; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">Convoy Editor <span>/ Mad Max</span></div>
+  <button class="btn" id="btnOpen" title="Open convoys.xml">&#128194; Open XML</button>
+  <button class="btn" id="btnSave" title="Save modified XML" disabled>&#128190; Save XML</button>
+  <div class="sep"></div>
+  <button class="btn" id="btnLoadMap" title="Load background map image">&#128506; Load Map</button>
+  <button class="btn" id="btnResetView" title="Reset view to fit all">&#8962; Fit All</button>
+  <div class="sep"></div>
+  <button class="btn" id="btnUndo" title="Undo" disabled>&#8630; Undo</button>
+  <button class="btn" id="btnRedo" title="Redo" disabled>&#8631; Redo</button>
+  <div class="status" id="status">No file loaded</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      Convoys <span class="count" id="convoyCount">0</span>
+    </div>
+    <div class="convoy-list" id="convoyList"></div>
+
+    <div class="props-panel" id="propsPanel" style="display:none">
+      <div class="props-header" id="propsHeader">Point Properties</div>
+      <div id="propsContent"></div>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="mainCanvas"></canvas>
+    <div class="toolbar">
+      <button class="tool-btn active" id="toolSelect" title="Select / Move (V)">&#9995;</button>
+      <button class="tool-btn" id="toolAdd" title="Add Point (A)">&#10010;</button>
+      <button class="tool-btn" id="toolPan" title="Pan (Space+drag)">&#9994;</button>
+    </div>
+    <div class="coords" id="coordsDisplay">X: 0 &nbsp; Z: 0</div>
+    <div class="minimap" id="minimap">
+      <canvas id="minimapCanvas"></canvas>
+    </div>
+    <div class="drop-overlay" id="dropOverlay">
+      <div class="drop-text">Drop map image here</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctxMenu">
+  <div class="ctx-item" id="ctxInsertBefore">&#10010; Insert point before</div>
+  <div class="ctx-item" id="ctxInsertAfter">&#10010; Insert point after</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" id="ctxDuplicate">&#128203; Duplicate point</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" id="ctxDelete">&#128465; Delete point</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FILE INPUTS -->
+<input type="file" id="fileInput" accept=".xml">
+<input type="file" id="mapInput" accept="image/*">
+
+<script>
+// =====================================================
+// STATE
+// =====================================================
+const state = {
+  xmlDoc: null,
+  xmlString: '',
+  convoys: [],
+  namedPoints: {},
+  selectedConvoy: null,
+  selectedPointIdx: -1,
+  visibleConvoys: new Set(),
+  tool: 'select',
+  // Camera
+  camX: 0, camY: 0, zoom: 0.05,
+  // Drag
+  isDragging: false, dragStart: null, dragType: null, dragPointStart: null,
+  // Map bg
+  bgImage: null, bgOffset: { x: 0, y: 0 }, bgScale: 1,
+  // Undo
+  undoStack: [], redoStack: [],
+  modified: false,
+};
+
+const TERRITORY_COLORS = {
+  jeet: '#3498db',
+  gutgash: '#e67e22',
+  pinkeye: '#9b59b6',
+  mm3030: '#e74c3c',
+  unknown: '#7f8c8d',
+};
+
+const POINT_RADIUS = 6;
+
+// =====================================================
+// DOM REFS
+// =====================================================
+const $ = id => document.getElementById(id);
+const canvas = $('mainCanvas');
+const ctx = canvas.getContext('2d');
+const mmCanvas = $('minimapCanvas');
+const mmCtx = mmCanvas.getContext('2d');
+const wrap = $('canvasWrap');
+
+// =====================================================
+// RESIZE
+// =====================================================
+function resize() {
+  const r = wrap.getBoundingClientRect();
+  canvas.width = r.width;
+  canvas.height = r.height;
+  mmCanvas.width = 160;
+  mmCanvas.height = 160;
+  render();
+}
+window.addEventListener('resize', resize);
+
+// =====================================================
+// COORDINATE TRANSFORMS
+// =====================================================
+// Game coords: X (east), Z (south) — we use X → right, Z → down
+function worldToScreen(wx, wz) {
+  const sx = (wx - state.camX) * state.zoom + canvas.width / 2;
+  const sy = (wz - state.camY) * state.zoom + canvas.height / 2;
+  return [sx, sy];
+}
+
+function screenToWorld(sx, sy) {
+  const wx = (sx - canvas.width / 2) / state.zoom + state.camX;
+  const wz = (sy - canvas.height / 2) / state.zoom + state.camY;
+  return [wx, wz];
+}
+
+// =====================================================
+// XML PARSING
+// =====================================================
+function parseConvoysXml(xmlStr) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlStr, 'text/xml');
+  state.xmlDoc = doc;
+  state.xmlString = xmlStr;
+
+  const rootObj = doc.querySelector('object > object[name="root"]');
+  if (!rootObj) { toast('Invalid XML: no root object found'); return; }
+
+  // 1. Parse all CNamedPoint
+  const namedPoints = {};
+  for (const obj of rootObj.children) {
+    const cls = getVal(obj, '_class');
+    if (cls === 'CNamedPoint') {
+      const name = getVal(obj, 'name');
+      const world = getVal(obj, 'world');
+      if (name && world) {
+        const parts = world.split(',').map(s => parseFloat(s.trim()));
+        if (parts.length >= 16) {
+          namedPoints[name] = { x: parts[12], y: parts[13], z: parts[14], obj };
+        }
+      }
+    }
+  }
+  state.namedPoints = namedPoints;
+
+  // 2. Parse MoverObjects containing convoy_choreographer
+  const convoys = [];
+  for (const mover of rootObj.children) {
+    const mCls = getVal(mover, '_class');
+    const mName = getVal(mover, 'name');
+    if (mCls !== 'CTransformObject' || mName !== 'MoverObject') continue;
+
+    let hasConvoy = false;
+    for (const v of mover.querySelectorAll('value')) {
+      if (v.textContent.includes('convoy_choreographer')) { hasConvoy = true; break; }
+    }
+    if (!hasConvoy) continue;
+
+    const convoy = { moverObj: mover, points: [], props: {} };
+
+    for (const child of mover.children) {
+      const cCls = getVal(child, '_class');
+      const cName = getVal(child, 'name');
+
+      if (cCls === 'CGameObjectOrderedList' && cName === 'Route') {
+        // Parse route entries
+        const entries = [];
+        for (const entry of child.children) {
+          if (getVal(entry, '_class') !== 'SGameObjectOrderedListEntry') continue;
+          const eName = getVal(entry, 'name') || '';
+          let pointRef = '';
+          for (const v of entry.querySelectorAll('value')) {
+            if (v.getAttribute('id') === '8E4189F6') { pointRef = v.textContent; break; }
+          }
+          entries.push({ name: eName, ref: pointRef, entryObj: entry });
+        }
+        entries.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        convoy.routeListObj = child;
+        convoy.routeEntries = entries;
+
+        // Build points array
+        for (const e of entries) {
+          if (e.ref && namedPoints[e.ref]) {
+            const np = namedPoints[e.ref];
+            convoy.points.push({ name: e.ref, x: np.x, y: np.y, z: np.z, entryObj: e.entryObj, npObj: np.obj });
+          }
+        }
+      }
+
+      if (cCls === 'CGraphScriptGameObject') {
+        // Extract key props
+        for (const v of child.querySelectorAll(':scope > value')) {
+          const n = v.getAttribute('name');
+          if (n) convoy.props[n] = v.textContent;
+        }
+        convoy.logicObj = child;
+      }
+    }
+
+    // Determine convoy identity
+    const relic = convoy.props.RelicRevealWreckedGuiIconEvent || '';
+    convoy.convoyId = relic.replace('.hoodornament.reveal', '') || 'mm3030';
+    const leaderEvt = convoy.props.ConvoyLeaderDestoyedEvent || '';
+    if (leaderEvt.includes('pinkeye')) convoy.territory = 'pinkeye';
+    else if (leaderEvt.includes('713D86D7')) convoy.territory = 'jeet';
+    else if (leaderEvt.includes('00A8B716')) convoy.territory = 'gutgash';
+    else if (leaderEvt.includes('BCC88294')) convoy.territory = 'mm3030';
+    else convoy.territory = 'unknown';
+
+    // Route name from first point
+    if (convoy.points.length > 0) {
+      const p0 = convoy.points[0].name;
+      convoy.routeName = p0.replace(/_nap\d+$/, '');
+    } else {
+      convoy.routeName = convoy.convoyId;
+    }
+
+    convoys.push(convoy);
+  }
+
+  state.convoys = convoys;
+  state.visibleConvoys = new Set(convoys.map((_, i) => i));
+  state.selectedConvoy = null;
+  state.selectedPointIdx = -1;
+  state.undoStack = [];
+  state.redoStack = [];
+  state.modified = false;
+
+  updateConvoyList();
+  fitAll();
+  updateStatus();
+  $('btnSave').disabled = false;
+  toast(`Loaded ${convoys.length} convoys, ${Object.keys(namedPoints).length} waypoints`);
+}
+
+function getVal(obj, name) {
+  for (const v of obj.querySelectorAll(':scope > value')) {
+    if (v.getAttribute('name') === name) return v.textContent;
+  }
+  return '';
+}
+
+// =====================================================
+// XML SERIALIZATION (save back changes)
+// =====================================================
+function saveXml() {
+  if (!state.xmlString) return;
+
+  try {
+    let xmlStr = state.xmlString;
+
+    // For each convoy, update moved point positions in the XML string
+    for (const convoy of state.convoys) {
+      for (const pt of convoy.points) {
+        if (!pt.npObj) continue; // skip newly added points (no DOM ref)
+
+        // Find the world value for this named point
+        const worldVal = pt.npObj.querySelector('value[name="world"]');
+        if (!worldVal) continue;
+
+        const oldWorld = worldVal.textContent;
+        const parts = oldWorld.split(',').map(s => s.trim());
+        if (parts.length < 16) continue;
+
+        // Build new world string with updated position
+        parts[12] = ' ' + pt.x.toFixed(4);
+        parts[13] = pt.y.toFixed(4);
+        parts[14] = pt.z.toFixed(4);
+        const newWorld = parts.join(',');
+
+        // Update in DOM (for consistency)
+        worldVal.textContent = newWorld;
+
+        // Update in the raw XML string
+        xmlStr = xmlStr.replace(oldWorld, newWorld);
+      }
+    }
+
+    // Ensure XML declaration
+    if (!xmlStr.startsWith('<?xml')) {
+      xmlStr = '<?xml version="1.0" encoding="utf-8"?>\n' + xmlStr;
+    }
+
+    // Update stored string
+    state.xmlString = xmlStr;
+
+    // Download file
+    const blob = new Blob([xmlStr], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'convoys.xml';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    state.modified = false;
+    updateStatus();
+    toast('Saved convoys.xml');
+  } catch (err) {
+    console.error('Save error:', err);
+    toast('Error saving: ' + err.message);
+  }
+}
+
+// =====================================================
+// UNDO / REDO
+// =====================================================
+function pushUndo(desc) {
+  // Save snapshot of all point positions
+  const snapshot = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
+  state.undoStack.push({ desc, snapshot });
+  state.redoStack = [];
+  state.modified = true;
+  $('btnUndo').disabled = false;
+  $('btnRedo').disabled = true;
+  updateStatus();
+}
+
+function undo() {
+  if (state.undoStack.length === 0) return;
+  const cur = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
+  const action = state.undoStack.pop();
+  state.redoStack.push({ desc: action.desc, snapshot: cur });
+
+  // Restore
+  action.snapshot.forEach((pts, ci) => {
+    if (ci < state.convoys.length) {
+      pts.forEach((p, pi) => {
+        if (pi < state.convoys[ci].points.length) {
+          Object.assign(state.convoys[ci].points[pi], p);
+        }
+      });
+    }
+  });
+
+  $('btnUndo').disabled = state.undoStack.length === 0;
+  $('btnRedo').disabled = false;
+  render();
+  updateProps();
+}
+
+function redo() {
+  if (state.redoStack.length === 0) return;
+  const cur = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
+  const action = state.redoStack.pop();
+  state.undoStack.push({ desc: action.desc, snapshot: cur });
+
+  action.snapshot.forEach((pts, ci) => {
+    if (ci < state.convoys.length) {
+      pts.forEach((p, pi) => {
+        if (pi < state.convoys[ci].points.length) {
+          Object.assign(state.convoys[ci].points[pi], p);
+        }
+      });
+    }
+  });
+
+  $('btnUndo').disabled = false;
+  $('btnRedo').disabled = state.redoStack.length === 0;
+  render();
+  updateProps();
+}
+
+// =====================================================
+// SIDEBAR
+// =====================================================
+function updateConvoyList() {
+  const list = $('convoyList');
+  list.innerHTML = '';
+  $('convoyCount').textContent = state.convoys.length;
+
+  state.convoys.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'convoy-item' + (state.selectedConvoy === i ? ' active' : '');
+    const color = TERRITORY_COLORS[c.territory] || TERRITORY_COLORS.unknown;
+    div.innerHTML = `
+      <div class="dot" style="background:${color}"></div>
+      <div class="info">
+        <div class="name">${c.convoyId}</div>
+        <div class="meta">${c.routeName} · ${c.points.length} pts</div>
+      </div>
+      <button class="vis-toggle ${state.visibleConvoys.has(i) ? '' : 'hidden'}">${state.visibleConvoys.has(i) ? '●' : '○'}</button>
+    `;
+
+    div.querySelector('.info').addEventListener('click', () => selectConvoy(i));
+    div.querySelector('.vis-toggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (state.visibleConvoys.has(i)) state.visibleConvoys.delete(i);
+      else state.visibleConvoys.add(i);
+      updateConvoyList();
+      render();
+    });
+
+    list.appendChild(div);
+  });
+}
+
+function selectConvoy(idx) {
+  state.selectedConvoy = idx;
+  state.selectedPointIdx = -1;
+  updateConvoyList();
+  updateProps();
+  render();
+}
+
+function selectPoint(convoyIdx, pointIdx) {
+  state.selectedConvoy = convoyIdx;
+  state.selectedPointIdx = pointIdx;
+  updateConvoyList();
+  updateProps();
+  render();
+}
+
+// =====================================================
+// PROPERTIES PANEL
+// =====================================================
+function updateProps() {
+  const panel = $('propsPanel');
+  const header = $('propsHeader');
+  const content = $('propsContent');
+
+  if (state.selectedConvoy === null) {
+    panel.style.display = 'none';
+    return;
+  }
+
+  panel.style.display = '';
+  const convoy = state.convoys[state.selectedConvoy];
+
+  if (state.selectedPointIdx >= 0 && state.selectedPointIdx < convoy.points.length) {
+    const pt = convoy.points[state.selectedPointIdx];
+    header.textContent = `Point ${state.selectedPointIdx + 1} / ${convoy.points.length}`;
+    content.innerHTML = `
+      <div class="prop-row"><span class="prop-label">Name</span><input id="propName" value="${pt.name}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">X</span><input id="propX" type="number" step="0.1" value="${pt.x.toFixed(2)}"></div>
+      <div class="prop-row"><span class="prop-label">Y (alt)</span><input id="propY" type="number" step="0.1" value="${pt.y.toFixed(2)}"></div>
+      <div class="prop-row"><span class="prop-label">Z</span><input id="propZ" type="number" step="0.1" value="${pt.z.toFixed(2)}"></div>
+      <div class="prop-actions">
+        <button class="btn danger" id="propDelete">&#128465; Delete</button>
+      </div>
+    `;
+
+    const applyChange = () => {
+      pushUndo('Edit point position');
+      pt.x = parseFloat($('propX').value) || 0;
+      pt.y = parseFloat($('propY').value) || 0;
+      pt.z = parseFloat($('propZ').value) || 0;
+      render();
+    };
+
+    $('propX').addEventListener('change', applyChange);
+    $('propY').addEventListener('change', applyChange);
+    $('propZ').addEventListener('change', applyChange);
+    $('propDelete').addEventListener('click', () => deletePoint(state.selectedConvoy, state.selectedPointIdx));
+
+  } else {
+    header.textContent = convoy.convoyId;
+    const p = convoy.props;
+    content.innerHTML = `
+      <div class="prop-row"><span class="prop-label">Route</span><input value="${convoy.routeName}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Speed</span><input value="${p.speed_min || '?'} – ${p.speed_max || '?'}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Loop</span><input value="${p.Loop || '?'}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Active</span><input value="${p.ConvoyActive || '?'}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">CompID</span><input value="${p.ConvoyCompositionId || '?'}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Points</span><input value="${convoy.points.length}" readonly style="opacity:0.5"></div>
+    `;
+  }
+}
+
+// =====================================================
+// POINT OPERATIONS
+// =====================================================
+function deletePoint(ci, pi) {
+  const convoy = state.convoys[ci];
+  if (convoy.points.length <= 2) { toast('Convoy must have at least 2 points'); return; }
+  pushUndo('Delete point');
+  convoy.points.splice(pi, 1);
+  renumberPoints(convoy);
+  if (state.selectedPointIdx >= convoy.points.length) state.selectedPointIdx = convoy.points.length - 1;
+  updateProps();
+  render();
+  toast('Point deleted');
+}
+
+function insertPoint(ci, afterIdx) {
+  const convoy = state.convoys[ci];
+  pushUndo('Insert point');
+
+  const pA = convoy.points[afterIdx];
+  const pB = convoy.points[(afterIdx + 1) % convoy.points.length];
+
+  const newPt = {
+    name: `${convoy.routeName}_nap_new${Date.now() % 10000}`,
+    x: (pA.x + pB.x) / 2,
+    y: (pA.y + pB.y) / 2,
+    z: (pA.z + pB.z) / 2,
+    entryObj: null,
+    npObj: null,
+  };
+
+  convoy.points.splice(afterIdx + 1, 0, newPt);
+  renumberPoints(convoy);
+  state.selectedPointIdx = afterIdx + 1;
+  updateProps();
+  render();
+  toast('Point inserted');
+}
+
+function addPointAtWorld(ci, wx, wz) {
+  const convoy = state.convoys[ci];
+  pushUndo('Add point');
+
+  // Find closest segment to insert after
+  let bestIdx = convoy.points.length - 1;
+  let bestDist = Infinity;
+
+  for (let i = 0; i < convoy.points.length; i++) {
+    const j = (i + 1) % convoy.points.length;
+    const pA = convoy.points[i];
+    const pB = convoy.points[j];
+    const d = distToSegment(wx, wz, pA.x, pA.z, pB.x, pB.z);
+    if (d < bestDist) { bestDist = d; bestIdx = i; }
+  }
+
+  // Get average Y from neighbors
+  const pA = convoy.points[bestIdx];
+  const pB = convoy.points[(bestIdx + 1) % convoy.points.length];
+
+  const newPt = {
+    name: `${convoy.routeName}_nap_new${Date.now() % 10000}`,
+    x: wx, y: (pA.y + pB.y) / 2, z: wz,
+    entryObj: null, npObj: null,
+  };
+
+  convoy.points.splice(bestIdx + 1, 0, newPt);
+  renumberPoints(convoy);
+  state.selectedPointIdx = bestIdx + 1;
+  updateProps();
+  render();
+  toast('Point added');
+}
+
+function renumberPoints(convoy) {
+  convoy.points.forEach((p, i) => {
+    // Keep original names for existing points, only rename new ones
+  });
+}
+
+function distToSegment(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay;
+  const len2 = dx * dx + dy * dy;
+  if (len2 === 0) return Math.hypot(px - ax, py - ay);
+  let t = ((px - ax) * dx + (py - ay) * dy) / len2;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+}
+
+// =====================================================
+// RENDERING
+// =====================================================
+function render() {
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // Background image
+  if (state.bgImage) {
+    const img = state.bgImage;
+    const sx = (state.bgOffset.x - state.camX) * state.zoom + w / 2;
+    const sy = (state.bgOffset.y - state.camY) * state.zoom + h / 2;
+    const sw = img.width * state.bgScale * state.zoom;
+    const sh = img.height * state.bgScale * state.zoom;
+    ctx.globalAlpha = 0.4;
+    ctx.drawImage(img, sx - sw / 2, sy - sh / 2, sw, sh);
+    ctx.globalAlpha = 1;
+  }
+
+  // Grid
+  drawGrid();
+
+  // Draw convoys
+  state.convoys.forEach((convoy, ci) => {
+    if (!state.visibleConvoys.has(ci)) return;
+    const color = TERRITORY_COLORS[convoy.territory] || TERRITORY_COLORS.unknown;
+    const isSelected = ci === state.selectedConvoy;
+    const alpha = isSelected ? 1.0 : 0.5;
+
+    const pts = convoy.points;
+    if (pts.length < 2) return;
+
+    // Draw route lines
+    ctx.strokeStyle = color;
+    ctx.lineWidth = isSelected ? 2.5 : 1.5;
+    ctx.globalAlpha = alpha;
+    ctx.setLineDash(isSelected ? [] : [6, 4]);
+    ctx.beginPath();
+    for (let i = 0; i < pts.length; i++) {
+      const [sx, sy] = worldToScreen(pts[i].x, pts[i].z);
+      if (i === 0) ctx.moveTo(sx, sy);
+      else ctx.lineTo(sx, sy);
+    }
+    // Close loop
+    const [sx0, sy0] = worldToScreen(pts[0].x, pts[0].z);
+    ctx.lineTo(sx0, sy0);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Direction arrows
+    if (isSelected && state.zoom > 0.02) {
+      for (let i = 0; i < pts.length; i++) {
+        const j = (i + 1) % pts.length;
+        const [ax, ay] = worldToScreen(pts[i].x, pts[i].z);
+        const [bx, by] = worldToScreen(pts[j].x, pts[j].z);
+        const mx = (ax + bx) / 2, my = (ay + by) / 2;
+        const angle = Math.atan2(by - ay, bx - ax);
+        ctx.save();
+        ctx.translate(mx, my);
+        ctx.rotate(angle);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(8, 0);
+        ctx.lineTo(-4, -4);
+        ctx.lineTo(-4, 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Draw points
+    ctx.globalAlpha = alpha;
+    for (let i = 0; i < pts.length; i++) {
+      const [sx, sy] = worldToScreen(pts[i].x, pts[i].z);
+      const isPointSelected = isSelected && i === state.selectedPointIdx;
+      const r = isPointSelected ? POINT_RADIUS + 3 : POINT_RADIUS;
+
+      // Outer ring
+      ctx.beginPath();
+      ctx.arc(sx, sy, r + 2, 0, Math.PI * 2);
+      ctx.fillStyle = isPointSelected ? '#f1c40f' : 'rgba(0,0,0,0.6)';
+      ctx.fill();
+
+      // Inner
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fillStyle = i === 0 ? '#2ecc71' : color;
+      ctx.fill();
+
+      // Label
+      if (isSelected && state.zoom > 0.03) {
+        ctx.fillStyle = '#fff';
+        ctx.font = '11px "Share Tech Mono", monospace';
+        ctx.globalAlpha = 0.8;
+        ctx.fillText(`${i + 1}`, sx + r + 4, sy + 4);
+        ctx.globalAlpha = alpha;
+      }
+    }
+
+    // Convoy label
+    if (state.zoom > 0.015) {
+      const center = pts.reduce((a, p) => ({ x: a.x + p.x / pts.length, z: a.z + p.z / pts.length }), { x: 0, z: 0 });
+      const [lx, ly] = worldToScreen(center.x, center.z);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = isSelected ? 0.9 : 0.4;
+      ctx.font = `${isSelected ? '13' : '11'}px "Rajdhani", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(convoy.convoyId, lx, ly - 15);
+      ctx.textAlign = 'left';
+    }
+
+    ctx.globalAlpha = 1;
+  });
+
+  // Render minimap
+  renderMinimap();
+}
+
+function drawGrid() {
+  const w = canvas.width, h = canvas.height;
+
+  // Calculate grid spacing based on zoom
+  let gridSize = 1000;
+  if (state.zoom > 0.1) gridSize = 100;
+  else if (state.zoom > 0.02) gridSize = 500;
+
+  ctx.strokeStyle = '#1a1a1f';
+  ctx.lineWidth = 0.5;
+
+  const [tlx, tlz] = screenToWorld(0, 0);
+  const [brx, brz] = screenToWorld(w, h);
+
+  const startX = Math.floor(Math.min(tlx, brx) / gridSize) * gridSize;
+  const endX = Math.ceil(Math.max(tlx, brx) / gridSize) * gridSize;
+  const startZ = Math.floor(Math.min(tlz, brz) / gridSize) * gridSize;
+  const endZ = Math.ceil(Math.max(tlz, brz) / gridSize) * gridSize;
+
+  ctx.beginPath();
+  for (let x = startX; x <= endX; x += gridSize) {
+    const [sx] = worldToScreen(x, 0);
+    ctx.moveTo(sx, 0);
+    ctx.lineTo(sx, h);
+  }
+  for (let z = startZ; z <= endZ; z += gridSize) {
+    const [, sy] = worldToScreen(0, z);
+    ctx.moveTo(0, sy);
+    ctx.lineTo(w, sy);
+  }
+  ctx.stroke();
+
+  // Origin cross
+  ctx.strokeStyle = '#2a2a30';
+  ctx.lineWidth = 1;
+  const [ox, oy] = worldToScreen(0, 0);
+  ctx.beginPath();
+  ctx.moveTo(ox, 0); ctx.lineTo(ox, h);
+  ctx.moveTo(0, oy); ctx.lineTo(w, oy);
+  ctx.stroke();
+
+  // Grid labels
+  if (state.zoom > 0.01) {
+    ctx.fillStyle = '#333';
+    ctx.font = '10px "Share Tech Mono", monospace';
+    for (let x = startX; x <= endX; x += gridSize) {
+      const [sx, sy] = worldToScreen(x, 0);
+      ctx.fillText(x.toFixed(0), sx + 3, oy + 12);
+    }
+    for (let z = startZ; z <= endZ; z += gridSize) {
+      const [sx, sy] = worldToScreen(0, z);
+      ctx.fillText(z.toFixed(0), ox + 3, sy - 3);
+    }
+  }
+}
+
+function renderMinimap() {
+  const mw = 160, mh = 160;
+  mmCtx.clearRect(0, 0, mw, mh);
+  mmCtx.fillStyle = '#0a0a0c';
+  mmCtx.fillRect(0, 0, mw, mh);
+
+  // Find bounds of all points
+  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+  for (const c of state.convoys) {
+    for (const p of c.points) {
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+      minZ = Math.min(minZ, p.z); maxZ = Math.max(maxZ, p.z);
+    }
+  }
+
+  if (minX === Infinity) return;
+
+  const pad = 500;
+  minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
+  const rangeX = maxX - minX, rangeZ = maxZ - minZ;
+  const scale = Math.min(mw / rangeX, mh / rangeZ) * 0.9;
+  const offX = (mw - rangeX * scale) / 2;
+  const offY = (mh - rangeZ * scale) / 2;
+
+  const mmWorld = (wx, wz) => [
+    offX + (wx - minX) * scale,
+    offY + (wz - minZ) * scale,
+  ];
+
+  // Draw routes
+  for (let ci = 0; ci < state.convoys.length; ci++) {
+    if (!state.visibleConvoys.has(ci)) continue;
+    const c = state.convoys[ci];
+    const color = TERRITORY_COLORS[c.territory] || TERRITORY_COLORS.unknown;
+    mmCtx.strokeStyle = color;
+    mmCtx.lineWidth = ci === state.selectedConvoy ? 2 : 0.8;
+    mmCtx.globalAlpha = ci === state.selectedConvoy ? 1 : 0.5;
+    mmCtx.beginPath();
+    for (let i = 0; i < c.points.length; i++) {
+      const [mx, my] = mmWorld(c.points[i].x, c.points[i].z);
+      if (i === 0) mmCtx.moveTo(mx, my);
+      else mmCtx.lineTo(mx, my);
+    }
+    if (c.points.length > 0) {
+      const [mx, my] = mmWorld(c.points[0].x, c.points[0].z);
+      mmCtx.lineTo(mx, my);
+    }
+    mmCtx.stroke();
+  }
+  mmCtx.globalAlpha = 1;
+
+  // Draw viewport rect
+  const [vtlx, vtlz] = screenToWorld(0, 0);
+  const [vbrx, vbrz] = screenToWorld(canvas.width, canvas.height);
+  const [rvx1, rvy1] = mmWorld(vtlx, vtlz);
+  const [rvx2, rvy2] = mmWorld(vbrx, vbrz);
+  mmCtx.strokeStyle = '#f1c40f';
+  mmCtx.lineWidth = 1;
+  mmCtx.strokeRect(
+    Math.min(rvx1, rvx2), Math.min(rvy1, rvy2),
+    Math.abs(rvx2 - rvx1), Math.abs(rvy2 - rvy1)
+  );
+}
+
+// =====================================================
+// CAMERA
+// =====================================================
+function fitAll() {
+  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+  for (const c of state.convoys) {
+    for (const p of c.points) {
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+      minZ = Math.min(minZ, p.z); maxZ = Math.max(maxZ, p.z);
+    }
+  }
+  if (minX === Infinity) return;
+
+  const cx = (minX + maxX) / 2;
+  const cz = (minZ + maxZ) / 2;
+  state.camX = cx;
+  state.camY = -cz;
+
+  const rangeX = maxX - minX + 1000;
+  const rangeZ = maxZ - minZ + 1000;
+  state.zoom = Math.min(canvas.width / rangeX, canvas.height / rangeZ) * 0.85;
+
+  render();
+}
+
+// =====================================================
+// HIT TESTING
+// =====================================================
+function hitTest(sx, sy) {
+  // Check visible convoys, prioritize selected
+  const order = [];
+  if (state.selectedConvoy !== null) order.push(state.selectedConvoy);
+  for (let i = 0; i < state.convoys.length; i++) {
+    if (i !== state.selectedConvoy && state.visibleConvoys.has(i)) order.push(i);
+  }
+
+  for (const ci of order) {
+    const convoy = state.convoys[ci];
+    for (let pi = convoy.points.length - 1; pi >= 0; pi--) {
+      const [px, py] = worldToScreen(convoy.points[pi].x, convoy.points[pi].z);
+      const dist = Math.hypot(sx - px, sy - py);
+      if (dist < POINT_RADIUS + 6) {
+        return { convoy: ci, point: pi };
+      }
+    }
+  }
+  return null;
+}
+
+// =====================================================
+// INPUT HANDLING
+// =====================================================
+let spaceDown = false;
+
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+
+  hideCtxMenu();
+
+  if (e.button === 2) { // Right click
+    const hit = hitTest(sx, sy);
+    if (hit) {
+      selectPoint(hit.convoy, hit.point);
+      showCtxMenu(e.clientX, e.clientY, hit.convoy, hit.point);
+    }
+    return;
+  }
+
+  if (e.button !== 0) return;
+
+  if (state.tool === 'pan' || spaceDown) {
+    state.isDragging = true;
+    state.dragType = 'pan';
+    state.dragStart = { x: e.clientX, y: e.clientY, camX: state.camX, camY: state.camY };
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  if (state.tool === 'add' && state.selectedConvoy !== null) {
+    const [wx, wz] = screenToWorld(sx, sy);
+    addPointAtWorld(state.selectedConvoy, wx, wz);
+    return;
+  }
+
+  // Select tool
+  const hit = hitTest(sx, sy);
+  if (hit) {
+    selectPoint(hit.convoy, hit.point);
+    state.isDragging = true;
+    state.dragType = 'point';
+    const pt = state.convoys[hit.convoy].points[hit.point];
+    state.dragStart = { x: e.clientX, y: e.clientY };
+    state.dragPointStart = { x: pt.x, z: pt.z };
+    pushUndo('Move point');
+  } else {
+    // Click on empty space - deselect point
+    if (state.selectedPointIdx >= 0) {
+      state.selectedPointIdx = -1;
+      updateProps();
+      render();
+    } else {
+      // Pan
+      state.isDragging = true;
+      state.dragType = 'pan';
+      state.dragStart = { x: e.clientX, y: e.clientY, camX: state.camX, camY: state.camY };
+    }
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const [wx, wz] = screenToWorld(sx, sy);
+  $('coordsDisplay').textContent = `X: ${wx.toFixed(0)}   Z: ${wz.toFixed(0)}`;
+
+  if (!state.isDragging) {
+    // Hover cursor
+    const hit = hitTest(sx, sy);
+    canvas.style.cursor = hit ? 'pointer' :
+      (state.tool === 'pan' || spaceDown) ? 'grab' :
+      state.tool === 'add' ? 'crosshair' : 'default';
+    return;
+  }
+
+  if (state.dragType === 'pan') {
+    const dx = e.clientX - state.dragStart.x;
+    const dy = e.clientY - state.dragStart.y;
+    state.camX = state.dragStart.camX - dx / state.zoom;
+    state.camY = state.dragStart.camY - dy / state.zoom;
+    render();
+  }
+
+  if (state.dragType === 'point' && state.selectedConvoy !== null && state.selectedPointIdx >= 0) {
+    const dx = (e.clientX - state.dragStart.x) / state.zoom;
+    const dy = (e.clientY - state.dragStart.y) / state.zoom;
+    const pt = state.convoys[state.selectedConvoy].points[state.selectedPointIdx];
+    pt.x = state.dragPointStart.x + dx;
+    pt.z = state.dragPointStart.z + dy;
+    render();
+    updateProps();
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  if (state.isDragging && state.dragType === 'pan') {
+    canvas.style.cursor = (state.tool === 'pan' || spaceDown) ? 'grab' : 'default';
+  }
+  state.isDragging = false;
+  state.dragType = null;
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+
+  // Shift+scroll = scale background image only
+  if (e.shiftKey && state.bgImage) {
+    // Some browsers swap deltaY→deltaX when Shift is held
+    const delta = e.deltaY !== 0 ? e.deltaY : e.deltaX;
+    const factor = delta < 0 ? 1.1 : 1 / 1.1;
+    state.bgScale *= factor;
+    render();
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+
+  const [wxBefore, wzBefore] = screenToWorld(sx, sy);
+
+  const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+  state.zoom = Math.max(0.001, Math.min(2, state.zoom * factor));
+
+  // Keep mouse world position stable
+  const [wxAfter, wzAfter] = screenToWorld(sx, sy);
+  state.camX += wxBefore - wxAfter;
+  state.camY += wzBefore - wzAfter;
+
+  render();
+}, { passive: false });
+
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+
+  if (e.code === 'Space') { spaceDown = true; e.preventDefault(); }
+  if (e.code === 'KeyV') setTool('select');
+  if (e.code === 'KeyA') setTool('add');
+  if (e.code === 'Delete' || e.code === 'Backspace') {
+    if (state.selectedConvoy !== null && state.selectedPointIdx >= 0) {
+      deletePoint(state.selectedConvoy, state.selectedPointIdx);
+    }
+  }
+  if (e.ctrlKey && e.code === 'KeyZ') { e.preventDefault(); undo(); }
+  if (e.ctrlKey && e.code === 'KeyY') { e.preventDefault(); redo(); }
+  if (e.code === 'KeyF') fitAll();
+
+  // Arrow keys to cycle through points
+  if (state.selectedConvoy !== null && state.selectedPointIdx >= 0) {
+    const convoy = state.convoys[state.selectedConvoy];
+    if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+      state.selectedPointIdx = (state.selectedPointIdx + 1) % convoy.points.length;
+      updateProps(); render();
+    }
+    if (e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
+      state.selectedPointIdx = (state.selectedPointIdx - 1 + convoy.points.length) % convoy.points.length;
+      updateProps(); render();
+    }
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  if (e.code === 'Space') spaceDown = false;
+});
+
+// =====================================================
+// TOOLS
+// =====================================================
+function setTool(tool) {
+  state.tool = tool;
+  $('toolSelect').classList.toggle('active', tool === 'select');
+  $('toolAdd').classList.toggle('active', tool === 'add');
+  $('toolPan').classList.toggle('active', tool === 'pan');
+}
+
+$('toolSelect').addEventListener('click', () => setTool('select'));
+$('toolAdd').addEventListener('click', () => setTool('add'));
+$('toolPan').addEventListener('click', () => setTool('pan'));
+
+// =====================================================
+// CONTEXT MENU
+// =====================================================
+let ctxConvoy = null, ctxPoint = null;
+
+function showCtxMenu(x, y, ci, pi) {
+  ctxConvoy = ci;
+  ctxPoint = pi;
+  const menu = $('ctxMenu');
+  menu.style.left = x + 'px';
+  menu.style.top = y + 'px';
+  menu.classList.add('show');
+}
+
+function hideCtxMenu() {
+  $('ctxMenu').classList.remove('show');
+}
+
+document.addEventListener('click', (e) => {
+  if (!$('ctxMenu').contains(e.target)) hideCtxMenu();
+});
+
+$('ctxInsertBefore').addEventListener('click', () => {
+  if (ctxConvoy !== null && ctxPoint !== null) {
+    const idx = ctxPoint === 0 ? state.convoys[ctxConvoy].points.length - 1 : ctxPoint - 1;
+    insertPoint(ctxConvoy, idx);
+  }
+  hideCtxMenu();
+});
+
+$('ctxInsertAfter').addEventListener('click', () => {
+  if (ctxConvoy !== null && ctxPoint !== null) {
+    insertPoint(ctxConvoy, ctxPoint);
+  }
+  hideCtxMenu();
+});
+
+$('ctxDuplicate').addEventListener('click', () => {
+  if (ctxConvoy !== null && ctxPoint !== null) {
+    const convoy = state.convoys[ctxConvoy];
+    const pt = convoy.points[ctxPoint];
+    pushUndo('Duplicate point');
+    const newPt = {
+      name: pt.name + '_copy',
+      x: pt.x + 50, y: pt.y, z: pt.z + 50,
+      entryObj: null, npObj: null,
+    };
+    convoy.points.splice(ctxPoint + 1, 0, newPt);
+    state.selectedPointIdx = ctxPoint + 1;
+    updateProps(); render();
+    toast('Point duplicated');
+  }
+  hideCtxMenu();
+});
+
+$('ctxDelete').addEventListener('click', () => {
+  if (ctxConvoy !== null && ctxPoint !== null) {
+    deletePoint(ctxConvoy, ctxPoint);
+  }
+  hideCtxMenu();
+});
+
+// =====================================================
+// FILE I/O
+// =====================================================
+$('btnOpen').addEventListener('click', () => $('fileInput').click());
+$('fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => parseConvoysXml(ev.target.result);
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+$('btnSave').addEventListener('click', saveXml);
+
+$('btnLoadMap').addEventListener('click', () => $('mapInput').click());
+$('mapInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      state.bgImage = img;
+      // Scale to roughly match game world
+      state.bgScale = 20;
+      state.bgOffset = { x: -5000, y: 2000 };
+      render();
+      toast('Map loaded — use Shift+drag to reposition, Shift+scroll to resize');
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+
+// Background image controls (Shift+drag to move, Shift+scroll to resize)
+canvas.addEventListener('mousedown', (e) => {
+  if (e.shiftKey && state.bgImage && e.button === 0) {
+    e.preventDefault();
+    state.isDragging = true;
+    state.dragType = 'bg';
+    state.dragStart = { x: e.clientX, y: e.clientY, bgX: state.bgOffset.x, bgY: state.bgOffset.y };
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  if (state.isDragging && state.dragType === 'bg') {
+    const dx = (e.clientX - state.dragStart.x) / state.zoom;
+    const dy = (e.clientY - state.dragStart.y) / state.zoom;
+    state.bgOffset.x = state.dragStart.bgX + dx;
+    state.bgOffset.y = state.dragStart.bgY + dy;
+    render();
+  }
+});
+
+// Drag & drop XML
+wrap.addEventListener('dragover', (e) => { e.preventDefault(); $('dropOverlay').classList.add('show'); });
+wrap.addEventListener('dragleave', () => { $('dropOverlay').classList.remove('show'); });
+wrap.addEventListener('drop', (e) => {
+  e.preventDefault();
+  $('dropOverlay').classList.remove('show');
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  if (file.name.endsWith('.xml')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => parseConvoysXml(ev.target.result);
+    reader.readAsText(file);
+  } else if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        state.bgImage = img;
+        state.bgScale = 20;
+        state.bgOffset = { x: -5000, y: 2000 };
+        render();
+        toast('Map image loaded');
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+$('btnResetView').addEventListener('click', fitAll);
+$('btnUndo').addEventListener('click', undo);
+$('btnRedo').addEventListener('click', redo);
+
+// =====================================================
+// UTILITY
+// =====================================================
+function updateStatus() {
+  const s = $('status');
+  if (!state.xmlDoc) { s.textContent = 'No file loaded'; return; }
+  s.textContent = `${state.convoys.length} convoys · ${Object.keys(state.namedPoints).length} waypoints` +
+    (state.modified ? ' · MODIFIED' : '');
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// =====================================================
+// INIT
+// =====================================================
+resize();
+render();
+</script>
+</body>
+</html>
