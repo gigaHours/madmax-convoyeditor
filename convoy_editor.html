@@ -792,15 +792,10 @@ async function saveXml() {
         ], '\t\t\t');
 
         // Insert CNamedPoint into root (before the MoverObjects)
-        // There's already a whitespace text node before moverObj, insert before it
-        const moverPrev = convoy.moverObj.previousSibling;
-        if (moverPrev && moverPrev.nodeType === 3) {
-          rootObj.insertBefore(npEl, moverPrev);
-          rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), moverPrev);
-        } else {
-          rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), convoy.moverObj);
-          rootObj.insertBefore(npEl, convoy.moverObj);
-        }
+        // Before moverObj there's already a whitespace node \n\t\t\t
+        // We insert npEl before moverObj, then add \n\t\t\t between npEl and moverObj
+        rootObj.insertBefore(npEl, convoy.moverObj);
+        rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), convoy.moverObj);
 
         // Create SGameObjectOrderedListEntry element (indent: 5 tabs in Route list)
         const refVal = xmlVal(doc, { type: 'string' }, pt.name);
@@ -929,6 +924,7 @@ async function saveXml() {
     updateStatus();
     toast('Saved ' + (state.loadedFileName || 'convoys.xml'));
   } catch (err) {
+    if (err.name === 'AbortError') return; // user cancelled Save As dialog
     console.error('Save error:', err);
     toast('Error saving: ' + err.message);
   }
@@ -937,23 +933,31 @@ async function saveXml() {
 // =====================================================
 // UNDO / REDO
 // =====================================================
+const MAX_UNDO = 50;
+
 function snapshotConvoys() {
-  return state.convoys.map(c => ({
-    points: c.points.map(p => ({ name: p.name, x: p.x, y: p.y, z: p.z, entryObj: p.entryObj, npObj: p.npObj })),
-    selectedIdx: state.selectedPointIdx,
-  }));
+  return {
+    convoys: state.convoys.map(c => ({
+      points: c.points.map(p => ({ name: p.name, x: p.x, y: p.y, z: p.z, entryObj: p.entryObj, npObj: p.npObj })),
+    })),
+    selectedConvoy: state.selectedConvoy,
+    selectedPointIdx: state.selectedPointIdx,
+  };
 }
 
 function restoreSnapshot(snapshot) {
-  snapshot.forEach((snap, ci) => {
+  snapshot.convoys.forEach((snap, ci) => {
     if (ci < state.convoys.length) {
       state.convoys[ci].points = snap.points.map(p => ({ ...p }));
     }
   });
+  state.selectedConvoy = snapshot.selectedConvoy;
+  state.selectedPointIdx = snapshot.selectedPointIdx;
 }
 
 function pushUndo(desc) {
   state.undoStack.push({ desc, snapshot: snapshotConvoys() });
+  if (state.undoStack.length > MAX_UNDO) state.undoStack.shift();
   state.redoStack = [];
   state.modified = true;
   $('btnUndo').disabled = false;
@@ -967,10 +971,10 @@ function undo() {
   state.redoStack.push({ desc: action.desc, snapshot: snapshotConvoys() });
 
   restoreSnapshot(action.snapshot);
-  state.selectedPointIdx = action.snapshot[state.selectedConvoy]?.selectedIdx ?? -1;
 
   $('btnUndo').disabled = state.undoStack.length === 0;
   $('btnRedo').disabled = false;
+  updateConvoyList();
   render();
   updateProps();
 }
@@ -981,10 +985,10 @@ function redo() {
   state.undoStack.push({ desc: action.desc, snapshot: snapshotConvoys() });
 
   restoreSnapshot(action.snapshot);
-  state.selectedPointIdx = action.snapshot[state.selectedConvoy]?.selectedIdx ?? -1;
 
   $('btnUndo').disabled = false;
   $('btnRedo').disabled = state.redoStack.length === 0;
+  updateConvoyList();
   render();
   updateProps();
 }
@@ -992,6 +996,8 @@ function redo() {
 // =====================================================
 // SIDEBAR
 // =====================================================
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 function updateConvoyList() {
   const list = $('convoyList');
   list.innerHTML = '';
@@ -1004,8 +1010,8 @@ function updateConvoyList() {
     div.innerHTML = `
       <div class="dot" style="background:${color}"></div>
       <div class="info">
-        <div class="name">${c.convoyId}</div>
-        <div class="meta">${c.routeName} · ${c.points.length} pts</div>
+        <div class="name">${esc(c.convoyId)}</div>
+        <div class="meta">${esc(c.routeName)} · ${c.points.length} pts</div>
       </div>
       <button class="vis-toggle ${state.visibleConvoys.has(i) ? '' : 'hidden'}">${state.visibleConvoys.has(i) ? '●' : '○'}</button>
     `;
@@ -1059,7 +1065,7 @@ function updateProps() {
     const pt = convoy.points[state.selectedPointIdx];
     header.textContent = `Point ${state.selectedPointIdx + 1} / ${convoy.points.length}`;
     content.innerHTML = `
-      <div class="prop-row"><span class="prop-label">Name</span><input id="propName" value="${pt.name}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Name</span><input id="propName" value="${esc(pt.name)}" readonly style="opacity:0.5"></div>
       <div class="prop-row"><span class="prop-label">X</span><input id="propX" type="number" step="0.1" value="${pt.x.toFixed(2)}"></div>
       <div class="prop-row"><span class="prop-label">Y (alt)</span><input id="propY" type="number" step="0.1" value="${pt.y.toFixed(2)}"></div>
       <div class="prop-row"><span class="prop-label">Z</span><input id="propZ" type="number" step="0.1" value="${pt.z.toFixed(2)}"></div>
@@ -1085,11 +1091,11 @@ function updateProps() {
     header.textContent = convoy.convoyId;
     const p = convoy.props;
     content.innerHTML = `
-      <div class="prop-row"><span class="prop-label">Route</span><input value="${convoy.routeName}" readonly style="opacity:0.5"></div>
-      <div class="prop-row"><span class="prop-label">Speed</span><input value="${p.speed_min || '?'} – ${p.speed_max || '?'}" readonly style="opacity:0.5"></div>
-      <div class="prop-row"><span class="prop-label">Loop</span><input value="${p.Loop || '?'}" readonly style="opacity:0.5"></div>
-      <div class="prop-row"><span class="prop-label">Active</span><input value="${p.ConvoyActive || '?'}" readonly style="opacity:0.5"></div>
-      <div class="prop-row"><span class="prop-label">CompID</span><input value="${p.ConvoyCompositionId || '?'}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Route</span><input value="${esc(convoy.routeName)}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Speed</span><input value="${esc(p.speed_min || '?')} – ${esc(p.speed_max || '?')}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Loop</span><input value="${esc(p.Loop || '?')}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">Active</span><input value="${esc(p.ConvoyActive || '?')}" readonly style="opacity:0.5"></div>
+      <div class="prop-row"><span class="prop-label">CompID</span><input value="${esc(p.ConvoyCompositionId || '?')}" readonly style="opacity:0.5"></div>
       <div class="prop-row"><span class="prop-label">Points</span><input value="${convoy.points.length}" readonly style="opacity:0.5"></div>
     `;
   }
@@ -1439,7 +1445,7 @@ function fitAll() {
   const cx = (minX + maxX) / 2;
   const cz = (minZ + maxZ) / 2;
   state.camX = cx;
-  state.camY = -cz;
+  state.camY = cz;
 
   const rangeX = maxX - minX + 1000;
   const rangeZ = maxZ - minZ + 1000;
@@ -1515,10 +1521,10 @@ canvas.addEventListener('mousedown', (e) => {
     selectPoint(hit.convoy, hit.point);
     state.isDragging = true;
     state.dragType = 'point';
+    state.dragMoved = false;
     const pt = state.convoys[hit.convoy].points[hit.point];
     state.dragStart = { x: e.clientX, y: e.clientY };
     state.dragPointStart = { x: pt.x, z: pt.z };
-    pushUndo('Move point');
   } else {
     // Click on empty space - deselect point
     if (state.selectedPointIdx >= 0) {
@@ -1561,11 +1567,17 @@ canvas.addEventListener('mousemove', (e) => {
   if (state.dragType === 'point' && state.selectedConvoy !== null && state.selectedPointIdx >= 0) {
     const dx = (e.clientX - state.dragStart.x) / state.zoom;
     const dy = (e.clientY - state.dragStart.y) / state.zoom;
-    const pt = state.convoys[state.selectedConvoy].points[state.selectedPointIdx];
-    pt.x = state.dragPointStart.x + dx;
-    pt.z = state.dragPointStart.z + dy;
-    render();
-    updateProps();
+    if (!state.dragMoved && (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5)) {
+      state.dragMoved = true;
+      pushUndo('Move point');
+    }
+    if (state.dragMoved) {
+      const pt = state.convoys[state.selectedConvoy].points[state.selectedPointIdx];
+      pt.x = state.dragPointStart.x + dx;
+      pt.z = state.dragPointStart.z + dy;
+      render();
+      updateProps();
+    }
   }
 });
 
@@ -1611,6 +1623,13 @@ canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 // Keyboard
 document.addEventListener('keydown', (e) => {
+  // Ctrl+S — save (works even when input focused)
+  if ((e.ctrlKey || e.metaKey) && e.code === 'KeyS') {
+    e.preventDefault();
+    if (state.xmlString) saveXml();
+    return;
+  }
+
   if (e.target.tagName === 'INPUT') return;
 
   if (e.code === 'Space') { spaceDown = true; e.preventDefault(); }
@@ -1830,6 +1849,16 @@ function toast(msg) {
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+// =====================================================
+// UNSAVED CHANGES WARNING
+// =====================================================
+window.addEventListener('beforeunload', (e) => {
+  if (state.modified) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
 
 // =====================================================
 // INIT
