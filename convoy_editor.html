@@ -624,6 +624,10 @@ function parseConvoysXml(xmlStr) {
     else if (leaderEvt.includes('BCC88294')) convoy.territory = 'mm3030';
     else convoy.territory = 'unknown';
 
+    // Track original DOM refs for cleanup on save
+    convoy.originalNpObjs = new Set(convoy.points.map(p => p.npObj).filter(Boolean));
+    convoy.originalEntryObjs = new Set(convoy.points.map(p => p.entryObj).filter(Boolean));
+
     // Route name from first point
     if (convoy.points.length > 0) {
       const p0 = convoy.points[0].name;
@@ -788,8 +792,15 @@ async function saveXml() {
         ], '\t\t\t');
 
         // Insert CNamedPoint into root (before the MoverObjects)
-        rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), convoy.moverObj);
-        rootObj.insertBefore(npEl, convoy.moverObj);
+        // There's already a whitespace text node before moverObj, insert before it
+        const moverPrev = convoy.moverObj.previousSibling;
+        if (moverPrev && moverPrev.nodeType === 3) {
+          rootObj.insertBefore(npEl, moverPrev);
+          rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), moverPrev);
+        } else {
+          rootObj.insertBefore(doc.createTextNode('\n\t\t\t'), convoy.moverObj);
+          rootObj.insertBefore(npEl, convoy.moverObj);
+        }
 
         // Create SGameObjectOrderedListEntry element (indent: 5 tabs in Route list)
         const refVal = xmlVal(doc, { type: 'string' }, pt.name);
@@ -803,9 +814,15 @@ async function saveXml() {
           refVal,
         ], '\t\t\t\t\t');
 
-        // Add entry to the Route list
-        convoy.routeListObj.appendChild(doc.createTextNode('\n\t\t\t\t\t'));
-        convoy.routeListObj.appendChild(entryEl);
+        // Add entry to the Route list (insert before closing whitespace)
+        const lastChild = convoy.routeListObj.lastChild;
+        if (lastChild && lastChild.nodeType === 3) {
+          convoy.routeListObj.insertBefore(doc.createTextNode('\n\t\t\t\t\t'), lastChild);
+          convoy.routeListObj.insertBefore(entryEl, lastChild);
+        } else {
+          convoy.routeListObj.appendChild(doc.createTextNode('\n\t\t\t\t\t'));
+          convoy.routeListObj.appendChild(entryEl);
+        }
 
         // Update point references so subsequent saves work correctly
         pt.npObj = npEl;
@@ -832,24 +849,32 @@ async function saveXml() {
       }
     }
 
-    // 4. Handle deleted points: remove orphaned route entries
+    // 4. Handle deleted points: remove orphaned route entries and CNamedPoints
     for (const convoy of state.convoys) {
-      if (!convoy.routeListObj) continue;
-      const currentNames = new Set(convoy.points.map(p => p.name));
-      const entriesToRemove = [];
-      for (const entry of convoy.routeListObj.children) {
-        if (getVal(entry, '_class') !== 'SGameObjectOrderedListEntry') continue;
-        let pointRef = '';
-        for (const v of entry.querySelectorAll('value')) {
-          if (v.getAttribute('id') === '8E4189F6') { pointRef = v.textContent; break; }
-        }
-        if (pointRef && !currentNames.has(pointRef)) {
-          entriesToRemove.push(entry);
+      const activeNpObjs = new Set(convoy.points.map(p => p.npObj).filter(Boolean));
+      const activeEntryObjs = new Set(convoy.points.map(p => p.entryObj).filter(Boolean));
+
+      // Remove route entries that were originally in this convoy but are no longer active
+      if (convoy.routeListObj && convoy.originalEntryObjs) {
+        for (const entry of convoy.originalEntryObjs) {
+          if (!activeEntryObjs.has(entry) && entry.parentNode) {
+            entry.parentNode.removeChild(entry);
+          }
         }
       }
-      for (const entry of entriesToRemove) {
-        convoy.routeListObj.removeChild(entry);
+
+      // Remove CNamedPoints that were originally in this convoy but are no longer active
+      if (convoy.originalNpObjs) {
+        for (const np of convoy.originalNpObjs) {
+          if (!activeNpObjs.has(np) && np.parentNode) {
+            np.parentNode.removeChild(np);
+          }
+        }
       }
+
+      // Update original refs to match current state (for future saves)
+      convoy.originalNpObjs = activeNpObjs;
+      convoy.originalEntryObjs = activeEntryObjs;
     }
 
     // 5. Ensure all empty elements have a text node (prevents self-closing tags)
@@ -912,10 +937,23 @@ async function saveXml() {
 // =====================================================
 // UNDO / REDO
 // =====================================================
+function snapshotConvoys() {
+  return state.convoys.map(c => ({
+    points: c.points.map(p => ({ name: p.name, x: p.x, y: p.y, z: p.z, entryObj: p.entryObj, npObj: p.npObj })),
+    selectedIdx: state.selectedPointIdx,
+  }));
+}
+
+function restoreSnapshot(snapshot) {
+  snapshot.forEach((snap, ci) => {
+    if (ci < state.convoys.length) {
+      state.convoys[ci].points = snap.points.map(p => ({ ...p }));
+    }
+  });
+}
+
 function pushUndo(desc) {
-  // Save snapshot of all point positions
-  const snapshot = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
-  state.undoStack.push({ desc, snapshot });
+  state.undoStack.push({ desc, snapshot: snapshotConvoys() });
   state.redoStack = [];
   state.modified = true;
   $('btnUndo').disabled = false;
@@ -925,20 +963,11 @@ function pushUndo(desc) {
 
 function undo() {
   if (state.undoStack.length === 0) return;
-  const cur = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
   const action = state.undoStack.pop();
-  state.redoStack.push({ desc: action.desc, snapshot: cur });
+  state.redoStack.push({ desc: action.desc, snapshot: snapshotConvoys() });
 
-  // Restore
-  action.snapshot.forEach((pts, ci) => {
-    if (ci < state.convoys.length) {
-      pts.forEach((p, pi) => {
-        if (pi < state.convoys[ci].points.length) {
-          Object.assign(state.convoys[ci].points[pi], p);
-        }
-      });
-    }
-  });
+  restoreSnapshot(action.snapshot);
+  state.selectedPointIdx = action.snapshot[state.selectedConvoy]?.selectedIdx ?? -1;
 
   $('btnUndo').disabled = state.undoStack.length === 0;
   $('btnRedo').disabled = false;
@@ -948,19 +977,11 @@ function undo() {
 
 function redo() {
   if (state.redoStack.length === 0) return;
-  const cur = state.convoys.map(c => c.points.map(p => ({ x: p.x, y: p.y, z: p.z, name: p.name })));
   const action = state.redoStack.pop();
-  state.undoStack.push({ desc: action.desc, snapshot: cur });
+  state.undoStack.push({ desc: action.desc, snapshot: snapshotConvoys() });
 
-  action.snapshot.forEach((pts, ci) => {
-    if (ci < state.convoys.length) {
-      pts.forEach((p, pi) => {
-        if (pi < state.convoys[ci].points.length) {
-          Object.assign(state.convoys[ci].points[pi], p);
-        }
-      });
-    }
-  });
+  restoreSnapshot(action.snapshot);
+  state.selectedPointIdx = action.snapshot[state.selectedConvoy]?.selectedIdx ?? -1;
 
   $('btnUndo').disabled = false;
   $('btnRedo').disabled = state.redoStack.length === 0;
@@ -1081,16 +1102,7 @@ function deletePoint(ci, pi) {
   const convoy = state.convoys[ci];
   if (convoy.points.length <= 2) { toast('Convoy must have at least 2 points'); return; }
   pushUndo('Delete point');
-  const removed = convoy.points.splice(pi, 1)[0];
-  // Remove from XML DOM if it exists there
-  if (removed.npObj && removed.npObj.parentNode) {
-    removed.npObj.parentNode.removeChild(removed.npObj);
-  }
-  if (removed.entryObj && removed.entryObj.parentNode) {
-    removed.entryObj.parentNode.removeChild(removed.entryObj);
-  }
-  // Remove from namedPoints
-  delete state.namedPoints[removed.name];
+  convoy.points.splice(pi, 1);
   renumberPoints(convoy);
   if (state.selectedPointIdx >= convoy.points.length) state.selectedPointIdx = convoy.points.length - 1;
   updateProps();
