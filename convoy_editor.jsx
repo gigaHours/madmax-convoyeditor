@@ -357,7 +357,7 @@ export default function ConvoyEditor() {
     };inp.click();
   },[tst]);
 
-  // Load GUI roads
+  // Load GUI roads from file picker
   const loadRoads = useCallback(()=>{
     const inp=document.createElement('input');inp.type='file';inp.accept='.xml';
     inp.onchange=e=>{
@@ -369,6 +369,14 @@ export default function ConvoyEditor() {
       };r.readAsText(f);
     };inp.click();
   },[tst]);
+
+  // Auto-load GUI roads from bundled file
+  useEffect(()=>{
+    fetch('/guiroadmeshc.xml').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(txt=>{
+      const rds=parseGuiRoads(txt);
+      if(rds.length){setRoads(rds);setRoadsLoaded(true);setShowRoads(true);}
+    }).catch(()=>{});
+  },[]);
 
   // Save
   const saveFile = useCallback(()=>{

@@ -1,0 +1,31 @@
+{
+  "name": "madmax-convoyeditor",
+  "version": "1.0.0",
+  "description": "Opens global/convoys.bl/global/convoys.xml (button or drag & drop) Parses all 14 convoys, routes, waypoints Draws routes in 2D (X/Z projection) with colors by territory (Jeet — blue, Gutgash — orange, Pink Eye — purple, MM3030 — red) Saves the modified XML back",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigaHours/madmax-convoyeditor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gigaHours/madmax-convoyeditor/issues"
+  },
+  "homepage": "https://github.com/gigaHours/madmax-convoyeditor#readme",
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.4",
+    "vite": "^7.3.1"
+  }
+}
