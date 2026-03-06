@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<container extension=".blo" format="RTPC" endian="Little">
+<?xml version="1.0" encoding="utf-8"?><container extension=".blo" format="RTPC" endian="Little">
 	<object>
 		<object name="root">
 			<object name="0">
@@ -12,7 +11,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8965.759,202.4294,5485.743,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8965.7590,202.4294,5485.7430,1</value>
 			</object>
 			<object name="1">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -24,7 +23,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -9549.704,177.0458,4791.626,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -9549.7040,177.0458,4791.6260,1</value>
 			</object>
 			<object id="002080A1">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -36,7 +35,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7802.733,508.9498,504.1772,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7802.7330,508.9498,504.1772,1</value>
 			</object>
 			<object id="0069C4CC">
 				<value name="_class" type="string">CScriptGameObject</value>
@@ -67,7 +66,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7455.466,443.3572,124.4771,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7455.4660,443.3572,124.4771,1</value>
 			</object>
 			<object id="03D1AC62">
 				<value name="_class" type="string">CTransformObject</value>
@@ -88,7 +87,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy5_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.8176476,-0.0003407194,0.575719,0, -0.0004229031,0.9999999,-8.8E-06,0, -0.5757189,-0.0002506687,-0.8176476,0, -7363.763,336.3774,3186.379,1</value>
+				<value name="world" type="mat">-0.8176476,-0.0003407194,0.575719,0,-0.0004229031,0.9999999,-8.8E-06,0,-0.5757189,-0.0002506687,-0.8176476,0, -7363.7630,336.3774,3186.3790,1</value>
 			</object>
 			<object id="056837ED">
 				<value name="_class" type="string">CTransformObject</value>
@@ -157,7 +156,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -1399.746,338.1301,4966.875,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -1399.7460,338.1301,4966.8750,1</value>
 			</object>
 			<object id="06B807D4">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -169,7 +168,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 1584.163,683.2499,-13750.02,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 1584.1630,683.2499,-13750.0200,1</value>
 			</object>
 			<object id="06E6C969">
 				<value name="_class" type="string">CTransformObject</value>
@@ -222,7 +221,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -3802.027,362.8495,5653.336,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -3802.0270,362.8495,5653.3360,1</value>
 			</object>
 			<object id="0B101937">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -313,7 +312,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -4892.401,327.0362,5100.691,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -4892.4010,327.0362,5100.6910,1</value>
 			</object>
 			<object id="0F8D0B31">
 				<value name="_class" type="string">CConvoyDataContainer</value>
@@ -336,7 +335,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7608.647,289.7222,5372.181,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7608.6470,289.7222,5372.1810,1</value>
 			</object>
 			<object id="105E95DA">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -348,7 +347,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -3874.564,410.7856,1536.878,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -3874.5640,410.7856,1536.8780,1</value>
 			</object>
 			<object id="11AA7F34">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -360,7 +359,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -4718.478,424.5296,3375.749,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -4718.4780,424.5296,3375.7490,1</value>
 			</object>
 			<object id="137EF49E">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -372,7 +371,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy4_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0, -0.0002928152,0.9999999,-0.0003052602,0, 0.1710695,-0.0002506686,-0.9852589,0, -5398.95,283.0331,6327.211,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0,-0.0002928152,0.9999999,-0.0003052602,0,0.1710695,-0.0002506686,-0.9852589,0, -5398.9500,283.0331,6327.2110,1</value>
 			</object>
 			<object id="13D9209E">
 				<value name="_class" type="string">CRoadMover</value>
@@ -393,7 +392,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.1710693,-0.0003407194,0.9852589,0, -0.0003052601,0.9999999,0.0002928152,0, -0.9852589,-0.0002506686,-0.1710694,0, -4661.509,418.1183,2850.145,1</value>
+				<value name="world" type="mat">-0.1710693,-0.0003407194,0.9852589,0,-0.0003052601,0.9999999,0.0002928152,0,-0.9852589,-0.0002506686,-0.1710694,0, -4661.5090,418.1183,2850.1450,1</value>
 			</object>
 			<object id="14A92E2E">
 				<value name="_class" type="string">CConvoyDataContainer</value>
@@ -606,7 +605,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">0.243034,0,-0.9700177,0, 0,1,0,0, 0.9700177,0,0.243034,0, 1185.487,658.3438,-13295.53,1</value>
+				<value name="world" type="mat">0.243034,0,-0.9700177,0,0,1,0,0,0.9700177,0,0.243034,0, 1185.4870,658.3438,-13295.5300,1</value>
 			</object>
 			<object id="19860C79">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -855,7 +854,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -7203.377,440.9938,397.1733,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -7203.3770,440.9938,397.1733,1</value>
 			</object>
 			<object id="1EEC8B29">
 				<value name="_class" type="string">CMapIcon</value>
@@ -1025,7 +1024,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">0.5757191,-0.0003407194,0.8176475,0, -8.799989E-06,0.9999999,0.0004229032,0, -0.8176475,-0.0002506687,0.5757191,0, -8382.639,493.4861,-72.19727,1</value>
+				<value name="world" type="mat">0.5757191,-0.0003407194,0.8176475,0,-8.799989E-06,0.9999999,0.0004229032,0,-0.8176475,-0.0002506687,0.5757191,0, -8382.6390,493.4861,-72.1973,1</value>
 			</object>
 			<object id="2196C6A9">
 				<value name="_class" type="string">CTransformObject</value>
@@ -1196,7 +1195,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -3693.437,356.0734,5208.507,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -3693.4370,356.0734,5208.5070,1</value>
 			</object>
 			<object id="22FDBF12">
 				<value name="_class" type="string">CConvoyDataContainer</value>
@@ -1219,7 +1218,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -7850.633,476.7293,-1585.434,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -7850.6330,476.7293,-1585.4340,1</value>
 			</object>
 			<object id="2415FFE6">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -1231,7 +1230,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -9499.069,180.3365,5226.663,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -9499.0690,180.3365,5226.6630,1</value>
 			</object>
 			<object id="245C6B6C">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -1243,7 +1242,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -2981.289,431.5294,1459.435,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -2981.2890,431.5294,1459.4350,1</value>
 			</object>
 			<object id="24B78A32">
 				<value name="_class" type="string">CTeleport</value>
@@ -1322,7 +1321,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -3407.37,335.3941,5775.869,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -3407.3700,335.3941,5775.8690,1</value>
 			</object>
 			<object id="296BA391">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -1334,7 +1333,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -4398.607,438.4053,1223.903,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -4398.6070,438.4053,1223.9030,1</value>
 			</object>
 			<object id="296F282A">
 				<value name="_class" type="string">CMapIcon</value>
@@ -1716,7 +1715,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -8989.311,218.2975,4735.124,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -8989.3110,218.2975,4735.1240,1</value>
 			</object>
 			<object id="2F026562">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -1728,7 +1727,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -6293.521,453.62,-1396.793,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -6293.5210,453.6200,-1396.7930,1</value>
 			</object>
 			<object id="2F7F7D13">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -1740,7 +1739,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 2252.381,683.0046,-14586.81,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 2252.3810,683.0046,-14586.8100,1</value>
 			</object>
 			<object id="30633D9C">
 				<value name="_class" type="string">CTransformObject</value>
@@ -1761,7 +1760,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8063.688,464.4469,-211.7271,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8063.6880,464.4469,-211.7271,1</value>
 			</object>
 			<object id="31C527AC">
 				<value name="_class" type="string">CTransformObject</value>
@@ -1782,7 +1781,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap8</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8310.116,474.2451,-944.9829,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8310.1160,474.2451,-944.9829,1</value>
 			</object>
 			<object id="334C5E49">
 				<value name="_class" type="string">CTransformObject</value>
@@ -1945,7 +1944,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -4703.662,354.9014,5529.258,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -4703.6620,354.9014,5529.2580,1</value>
 			</object>
 			<object id="369F2A8D">
 				<value name="_class" type="string">CMapIcon</value>
@@ -2054,7 +2053,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -2085.351,298.3266,5231.708,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -2085.3510,298.3266,5231.7080,1</value>
 			</object>
 			<object id="398ECAC1">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -2066,7 +2065,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2494.112,416.0679,2135.317,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2494.1120,416.0679,2135.3170,1</value>
 			</object>
 			<object id="3AF1D115">
 				<value name="_class" type="string">CTransformObject</value>
@@ -2343,7 +2342,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy4_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0, -0.0002928152,0.9999999,-0.0003052603,0, 0.1710695,-0.0002506687,-0.9852589,0, -6041.107,302.5979,5750.925,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0,-0.0002928152,0.9999999,-0.0003052603,0,0.1710695,-0.0002506687,-0.9852589,0, -6041.1070,302.5979,5750.9250,1</value>
 			</object>
 			<object id="3FE10F76">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -2623,7 +2622,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 1468.973,660.8854,-14878.83,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 1468.9730,660.8854,-14878.8300,1</value>
 			</object>
 			<object id="445EBC2A">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -2635,7 +2634,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7062.209,490.9132,-394.8315,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7062.2090,490.9132,-394.8315,1</value>
 			</object>
 			<object id="446545DD">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -2647,7 +2646,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -5441.2,271.8369,5237.253,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -5441.2000,271.8369,5237.2530,1</value>
 			</object>
 			<object id="470514D4">
 				<value name="_class" type="string">CConvoyDataContainer</value>
@@ -2768,7 +2767,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -5459.478,420.2118,2879.584,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -5459.4780,420.2118,2879.5840,1</value>
 			</object>
 			<object id="4CA80C10">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -2780,7 +2779,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -5947.125,425.396,2674.558,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -5947.1250,425.3960,2674.5580,1</value>
 			</object>
 			<object id="4D53A138">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -2792,7 +2791,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8187.522,469.2555,-1403.123,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8187.5220,469.2555,-1403.1230,1</value>
 			</object>
 			<object id="4E0F9C5F">
 				<value name="_class" type="string">CRoadMover</value>
@@ -2813,7 +2812,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7353.706,479.9158,-23.5835,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7353.7060,479.9158,-23.5835,1</value>
 			</object>
 			<object id="4E9F0DFE">
 				<value name="_class" type="string">CRoadMover</value>
@@ -2966,7 +2965,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -1414.157,408.5248,2622.776,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -1414.1570,408.5248,2622.7760,1</value>
 			</object>
 			<object id="5C1AA5FC">
 				<value name="_class" type="string">CTransformObject</value>
@@ -3130,7 +3129,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy5_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.8176476,-0.0003407194,0.575719,0, -0.0004229031,0.9999999,-8.800018E-06,0, -0.5757189,-0.0002506686,-0.8176476,0, -8351.107,318.3855,3721.049,1</value>
+				<value name="world" type="mat">-0.8176476,-0.0003407194,0.575719,0,-0.0004229031,0.9999999,-8.800018E-06,0,-0.5757189,-0.0002506686,-0.8176476,0, -8351.1070,318.3855,3721.0490,1</value>
 			</object>
 			<object id="607F4ECB">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3142,7 +3141,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -4281.548,365.6804,5168.94,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -4281.5480,365.6804,5168.9400,1</value>
 			</object>
 			<object id="60CB63C4">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -3270,7 +3269,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -1514.275,417.8925,3176.325,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -1514.2750,417.8925,3176.3250,1</value>
 			</object>
 			<object id="637D3BF5">
 				<value name="_class" type="string">CTransformObject</value>
@@ -3291,7 +3290,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -5244.705,280.4374,5496.559,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -5244.7050,280.4374,5496.5590,1</value>
 			</object>
 			<object id="68539523">
 				<value name="_class" type="string">CTransformObject</value>
@@ -3380,7 +3379,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy4_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407195,-0.1710694,0, -0.0002928152,0.9999999,-0.0003052602,0, 0.1710695,-0.0002506686,-0.9852589,0, -5187.025,302.8734,6118.172,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407195,-0.1710694,0,-0.0002928152,0.9999999,-0.0003052602,0,0.1710695,-0.0002506686,-0.9852589,0, -5187.0250,302.8734,6118.1720,1</value>
 			</object>
 			<object id="6C9C3D1D">
 				<value name="_class" type="string">CScriptGameObject</value>
@@ -3516,7 +3515,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy5_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -8682.363,314.1606,3256.402,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -8682.3630,314.1606,3256.4020,1</value>
 			</object>
 			<object id="6FE1FFC9">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3528,7 +3527,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7564.435,489.7142,-517.165,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7564.4350,489.7142,-517.1650,1</value>
 			</object>
 			<object id="7399634A">
 				<value name="_class" type="string">CTeleport</value>
@@ -3630,7 +3629,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -6776.001,441.1571,797.3931,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -6776.0010,441.1571,797.3931,1</value>
 			</object>
 			<object id="788373B3">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3642,7 +3641,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -9472.006,527.6422,-2180.619,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -9472.0060,527.6422,-2180.6190,1</value>
 			</object>
 			<object id="7947F4DA">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3654,7 +3653,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap9</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8054.641,476.7035,-1250.129,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8054.6410,476.7035,-1250.1290,1</value>
 			</object>
 			<object id="79DD02C5">
 				<value name="_class" type="string">CMapIcon</value>
@@ -3714,7 +3713,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap9</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -6464.872,456.033,1179.831,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -6464.8720,456.0330,1179.8310,1</value>
 			</object>
 			<object id="7B960DA8">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -3758,7 +3757,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -1424.639,418.6999,4033.641,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -1424.6390,418.6999,4033.6410,1</value>
 			</object>
 			<object id="7BCF3B94">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3770,7 +3769,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap8</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 1940.153,689.4591,-14293.18,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 1940.1530,689.4591,-14293.1800,1</value>
 			</object>
 			<object id="7DDE9BAD">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3782,7 +3781,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -1859.962,409.1186,3255.926,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -1859.9620,409.1186,3255.9260,1</value>
 			</object>
 			<object id="7E168236">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -3794,7 +3793,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -4393.402,364.6692,4830.914,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -4393.4020,364.6692,4830.9140,1</value>
 			</object>
 			<object id="7FEE6C43">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -3838,7 +3837,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -6103.7,415.5411,2922.311,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -6103.7000,415.5411,2922.3110,1</value>
 			</object>
 			<object id="80A40120">
 				<value name="_class" type="string">CTeleport</value>
@@ -3901,7 +3900,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7638.503,499.2547,1432.441,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7638.5030,499.2547,1432.4410,1</value>
 			</object>
 			<object id="811E7545">
 				<value name="_class" type="string">CRoadMover</value>
@@ -3990,7 +3989,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0, -0.0002928152,0.9999999,-0.0003052602,0, 0.1710695,-0.0002506686,-0.9852589,0, -4771.827,320.753,5765.293,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0,-0.0002928152,0.9999999,-0.0003052602,0,0.1710695,-0.0002506686,-0.9852589,0, -4771.8270,320.7530,5765.2930,1</value>
 			</object>
 			<object id="84B622A8">
 				<value name="_class" type="string">CMapIcon</value>
@@ -4082,7 +4081,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy1_nap8</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7076.554,487.4729,1562.123,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7076.5540,487.4729,1562.1230,1</value>
 			</object>
 			<object id="8A5F81E9">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -4094,7 +4093,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -8173.007,303.5755,4707.287,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -8173.0070,303.5755,4707.2870,1</value>
 			</object>
 			<object id="8A676235">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -4156,7 +4155,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7945.254,261.8253,5336.16,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7945.2540,261.8253,5336.1600,1</value>
 			</object>
 			<object id="94E8178C">
 				<value name="_class" type="string">CTransformObject</value>
@@ -4676,7 +4675,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -3667.617,438.5877,1046.113,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -3667.6170,438.5877,1046.1130,1</value>
 			</object>
 			<object id="97EE86F5">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5002,7 +5001,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -5345.103,284.3752,4875.785,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -5345.1030,284.3752,4875.7850,1</value>
 			</object>
 			<object id="A26F1972">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5023,7 +5022,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7976.836,463.4202,-1896.325,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7976.8360,463.4202,-1896.3250,1</value>
 			</object>
 			<object id="A3BA7040">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5035,7 +5034,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7486.12,303.0672,4853.178,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7486.1200,303.0672,4853.1780,1</value>
 			</object>
 			<object id="A4501C91">
 				<value name="_class" type="string">CTeleport</value>
@@ -5064,7 +5063,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2073.339,405.4258,2035.297,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2073.3390,405.4258,2035.2970,1</value>
 			</object>
 			<object id="A62300A1">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5076,7 +5075,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy5_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -8247.537,354.253,2669.918,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -8247.5370,354.2530,2669.9180,1</value>
 			</object>
 			<object id="A6AFBF31">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5173,7 +5172,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -8956.504,487.5373,-1562.435,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -8956.5040,487.5373,-1562.4350,1</value>
 			</object>
 			<object id="A96B0EBE">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5339,7 +5338,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -7117.189,466.8152,-1577.619,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -7117.1890,466.8152,-1577.6190,1</value>
 			</object>
 			<object id="B0FD7DBB">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5360,7 +5359,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -8586.637,488.2628,-1412.296,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -8586.6370,488.2628,-1412.2960,1</value>
 			</object>
 			<object id="B152E23C">
 				<value name="_class" type="string">CTeleport</value>
@@ -5389,7 +5388,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2029.055,421.4495,4337.573,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2029.0550,421.4495,4337.5730,1</value>
 			</object>
 			<object id="B22569F6">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -5651,7 +5650,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 574.1235,636.2629,-14432.05,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 574.1235,636.2629,-14432.0500,1</value>
 			</object>
 			<object id="B5805128">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5663,7 +5662,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -9235.637,201.3131,4591.19,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -9235.6370,201.3131,4591.1900,1</value>
 			</object>
 			<object id="B5BE2B7B">
 				<value name="_class" type="string">CRoadMover</value>
@@ -5761,7 +5760,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy5_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.8176475,-0.0003407194,0.575719,0, -0.0004229031,0.9999999,-8.799975E-06,0, -0.5757189,-0.0002506686,-0.8176476,0, -7782.852,384.9758,2779.912,1</value>
+				<value name="world" type="mat">-0.8176475,-0.0003407194,0.575719,0,-0.0004229031,0.9999999,-8.799975E-06,0,-0.5757189,-0.0002506686,-0.8176476,0, -7782.8520,384.9758,2779.9120,1</value>
 			</object>
 			<object id="B89C75AB">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5773,7 +5772,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy1_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">0.5350898,-0.0003407194,-0.8447951,0, 0.0003940792,0.9999999,-0.0001537078,0, 0.8447951,-0.0002506687,0.5350899,0, -4003.406,369.4143,5348.047,1</value>
+				<value name="world" type="mat">0.5350898,-0.0003407194,-0.8447951,0,0.0003940792,0.9999999,-0.0001537078,0,0.8447951,-0.0002506687,0.5350899,0, -4003.4060,369.4143,5348.0470,1</value>
 			</object>
 			<object id="B94F5D01">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5785,7 +5784,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -9197.327,203.2301,5501.296,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -9197.3270,203.2301,5501.2960,1</value>
 			</object>
 			<object id="BAF26CCE">
 				<value name="_class" type="string">CTransformObject</value>
@@ -5916,7 +5915,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">1,0,0,0, 0,1,0,0, 0,0,1,0, 332.2461,569.1513,-13238.39,1</value>
+				<value name="world" type="mat">1,0,0,0,0,1,0,0,0,0,1,0, 332.2461,569.1513,-13238.3900,1</value>
 			</object>
 			<object id="C2402712">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -5928,7 +5927,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -3108.352,439.6667,1188.689,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -3108.3520,439.6667,1188.6890,1</value>
 			</object>
 			<object id="C4C101A7">
 				<value name="_class" type="string">CMapIcon</value>
@@ -6020,7 +6019,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -7576.417,322.6923,4452.265,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -7576.4170,322.6923,4452.2650,1</value>
 			</object>
 			<object id="C5BB8359">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -6063,7 +6062,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -7270.427,313.9947,4475.782,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -7270.4270,313.9947,4475.7820,1</value>
 			</object>
 			<object id="C7433DFE">
 				<value name="_class" type="string">CTransformObject</value>
@@ -6084,7 +6083,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -6539.682,465.0191,-791.438,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -6539.6820,465.0191,-791.4380,1</value>
 			</object>
 			<object id="C86F159E">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -6096,7 +6095,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy5_nap6</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2487.748,404.1692,2809.948,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2487.7480,404.1692,2809.9480,1</value>
 			</object>
 			<object id="C8A70FA7">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -6108,7 +6107,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy4_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0, -0.0002928151,0.9999999,-0.0003052603,0, 0.1710695,-0.0002506687,-0.9852589,0, -5947.371,282.3891,6300.353,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407194,-0.1710694,0,-0.0002928151,0.9999999,-0.0003052603,0,0.1710695,-0.0002506687,-0.9852589,0, -5947.3710,282.3891,6300.3530,1</value>
 			</object>
 			<object id="CA567B17">
 				<value name="_class" type="string">CMapIcon</value>
@@ -6367,7 +6366,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy3_nap8</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -7925.188,476.0493,-768.6411,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -7925.1880,476.0493,-768.6411,1</value>
 			</object>
 			<object id="CBD89C26">
 				<value name="_class" type="string">CConvoyDataContainer</value>
@@ -6621,7 +6620,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap7</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2419.62,348.0802,4567.149,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2419.6200,348.0802,4567.1490,1</value>
 			</object>
 			<object id="D5D0583D">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -6697,7 +6696,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy3_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.000387344,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -5168.863,301.0562,5011.883,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.000387344,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -5168.8630,301.0562,5011.8830,1</value>
 			</object>
 			<object id="D9C1C9E2">
 				<value name="_class" type="string">CScriptGameObject</value>
@@ -6807,7 +6806,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -9564.988,514.2418,-1835.608,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -9564.9880,514.2418,-1835.6080,1</value>
 			</object>
 			<object id="DDED80C8">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -7203,7 +7202,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap2</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -1847.764,286.1089,5141.463,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -1847.7640,286.1089,5141.4630,1</value>
 			</object>
 			<object id="E837C629">
 				<value name="_class" type="string">CTeleport</value>
@@ -7243,7 +7242,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">pinkeye_convoy2_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8465.428,501.9684,-2104.985,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8465.4280,501.9684,-2104.9850,1</value>
 			</object>
 			<object id="EC5EF8FB">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -7255,7 +7254,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -1786.915,426.0479,4000.123,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -1786.9150,426.0479,4000.1230,1</value>
 			</object>
 			<object id="EEFAD5B7">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -7267,7 +7266,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy4_nap8</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -2285.827,275.8924,5172.747,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -2285.8270,275.8924,5172.7470,1</value>
 			</object>
 			<object id="F0D08FC0">
 				<value name="_class" type="string">CTransformObject</value>
@@ -7320,7 +7319,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">mm3030_convoy_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.04876792,0,0.9988101,0, 0,1,0,0, -0.9988101,0,-0.04876792,0, 1791.028,686.5609,-14096.7,1</value>
+				<value name="world" type="mat">-0.04876792,0,0.9988101,0,0,1,0,0,-0.9988101,0,-0.04876792,0, 1791.0280,686.5609,-14096.7000,1</value>
 			</object>
 			<object id="F2AC05B1">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -7332,7 +7331,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy2_nap5</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -5680.111,415.4136,3201.683,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -5680.1110,415.4136,3201.6830,1</value>
 			</object>
 			<object id="F2FF1FAA">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -7376,7 +7375,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy4_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9852589,-0.0003407195,-0.1710694,0, -0.0002928152,0.9999999,-0.0003052602,0, 0.1710695,-0.0002506686,-0.9852589,0, -5864.317,306.2428,5590.429,1</value>
+				<value name="world" type="mat">-0.9852589,-0.0003407195,-0.1710694,0,-0.0002928152,0.9999999,-0.0003052602,0,0.1710695,-0.0002506686,-0.9852589,0, -5864.3170,306.2428,5590.4290,1</value>
 			</object>
 			<object id="F4631C84">
 				<value name="_class" type="string">CEventTrigger</value>
@@ -7419,7 +7418,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">jeet_convoy6_nap1</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699681,0, -0.2189947,-0.0002506686,-0.975726,0, -3424.022,408.8853,1566.021,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699681,0,-0.2189947,-0.0002506686,-0.975726,0, -3424.0220,408.8853,1566.0210,1</value>
 			</object>
 			<object id="F7CA9C57">
 				<value name="_class" type="string">CNamedPoint</value>
@@ -7431,7 +7430,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy1_nap4</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506687,-0.975726,0, -8946.795,202.9633,5313.642,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506687,-0.975726,0, -8946.7950,202.9633,5313.6420,1</value>
 			</object>
 			<object id="F890EF48">
 				<value name="_class" type="string">CTransformObject</value>
@@ -7618,7 +7617,7 @@
 				<value name="enabled_from_start" type="int">1</value>
 				<value name="name" type="string">gutgash_convoy2_nap3</value>
 				<value name="tags" type="vec_int"></value>
-				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0, -0.0003873439,0.9999999,-0.0001699682,0, -0.2189947,-0.0002506686,-0.975726,0, -8183.11,266.8202,5112.335,1</value>
+				<value name="world" type="mat">-0.9757259,-0.0003407194,0.2189948,0,-0.0003873439,0.9999999,-0.0001699682,0,-0.2189947,-0.0002506686,-0.975726,0, -8183.1100,266.8202,5112.3350,1</value>
 			</object>
 			<object id="FE1FD957">
 				<value name="_class" type="string">CConvoyDataContainer</value>
