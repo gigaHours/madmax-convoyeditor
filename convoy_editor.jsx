@@ -339,23 +339,36 @@ export default function ConvoyEditor() {
   const undo = useCallback(()=>{if(!undoRef.current.length)return;redoRef.current.push(snap());const p=undoRef.current.pop();setConvoys(cs=>cs.map((c,i)=>({...c,points:p[i]?p[i].points.map(pp=>({...pp})):c.points})));},[snap]);
   const redo = useCallback(()=>{if(!redoRef.current.length)return;undoRef.current.push(snap());const n=redoRef.current.pop();setConvoys(cs=>cs.map((c,i)=>({...c,points:n[i]?n[i].points.map(pp=>({...pp})):c.points})));},[snap]);
 
+  // Load XML string into editor state
+  const loadXmlStr = useCallback((xmlStr, filename)=>{
+    const{doc,convoys:cs,np,err}=parseXml(xmlStr);
+    if(err){tst('Error: '+err);return;}
+    fnRef.current=filename;
+    docRef.current=doc;npRef.current=np;setConvoys(cs);setVis(new Set(cs.map((_,i)=>i)));
+    setSc(-1);setSp(-1);setLoaded(true);setMod(false);undoRef.current=[];redoRef.current=[];
+    tst(`Loaded ${cs.length} convoys, ${Object.keys(np).length} waypoints`);
+    let mix=Infinity,max=-Infinity,miz=Infinity,maz=-Infinity;
+    for(const c of cs)for(const p of c.points){mix=Math.min(mix,p.x);max=Math.max(max,p.x);miz=Math.min(miz,p.z);maz=Math.max(maz,p.z);}
+    if(mix!==Infinity){const cv=cvRef.current;const rX=max-mix+2000,rZ=maz-miz+2000;const z=cv?Math.min(cv.width/rX,cv.height/rZ)*0.85:0.04;setCam({x:(mix+max)/2,y:(miz+maz)/2,z});}
+  },[tst]);
+
   // File open
   const openFile = useCallback(()=>{
     const inp=document.createElement('input');inp.type='file';inp.accept='.xml';
     inp.onchange=e=>{
-      const f=e.target.files[0];if(!f)return;fnRef.current=f.name;
-      const r=new FileReader();r.onload=ev=>{
-        const{doc,convoys:cs,np,err}=parseXml(ev.target.result);
-        if(err){tst('Error: '+err);return;}
-        docRef.current=doc;npRef.current=np;setConvoys(cs);setVis(new Set(cs.map((_,i)=>i)));
-        setSc(-1);setSp(-1);setLoaded(true);setMod(false);undoRef.current=[];redoRef.current=[];
-        tst(`Loaded ${cs.length} convoys, ${Object.keys(np).length} waypoints`);
-        let mix=Infinity,max=-Infinity,miz=Infinity,maz=-Infinity;
-        for(const c of cs)for(const p of c.points){mix=Math.min(mix,p.x);max=Math.max(max,p.x);miz=Math.min(miz,p.z);maz=Math.max(maz,p.z);}
-        if(mix!==Infinity){const cv=cvRef.current;const rX=max-mix+2000,rZ=maz-miz+2000;const z=cv?Math.min(cv.width/rX,cv.height/rZ)*0.85:0.04;setCam({x:(mix+max)/2,y:(miz+maz)/2,z});}
-      };r.readAsText(f);
+      const f=e.target.files[0];if(!f)return;
+      const r=new FileReader();r.onload=ev=>loadXmlStr(ev.target.result,f.name);r.readAsText(f);
     };inp.click();
-  },[tst]);
+  },[loadXmlStr]);
+
+  // Auto-load convoys.xml + roads from public/
+  useEffect(()=>{
+    fetch('/convoys.xml').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(txt=>loadXmlStr(txt,'convoys.xml')).catch(()=>{});
+    fetch('/guiroadmeshc.xml').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(txt=>{
+      const rds=parseGuiRoads(txt);
+      if(rds.length){setRoads(rds);setRoadsLoaded(true);setShowRoads(true);}
+    }).catch(()=>{});
+  },[]);// eslint-disable-line react-hooks/exhaustive-deps
 
   // Load GUI roads from file picker
   const loadRoads = useCallback(()=>{
@@ -370,15 +383,7 @@ export default function ConvoyEditor() {
     };inp.click();
   },[tst]);
 
-  // Auto-load GUI roads from bundled file
-  useEffect(()=>{
-    fetch('/guiroadmeshc.xml').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(txt=>{
-      const rds=parseGuiRoads(txt);
-      if(rds.length){setRoads(rds);setRoadsLoaded(true);setShowRoads(true);}
-    }).catch(()=>{});
-  },[]);
-
-  // Save
+  // Save (download)
   const saveFile = useCallback(()=>{
     if(!docRef.current)return;
     const xml=serialize(docRef.current,convoys,npRef.current);
@@ -387,6 +392,36 @@ export default function ConvoyEditor() {
     a.href=url;a.download=fnRef.current||'convoys.xml';document.body.appendChild(a);a.click();document.body.removeChild(a);
     setTimeout(()=>URL.revokeObjectURL(url),1000);setMod(false);tst('Saved '+fnRef.current);
   },[convoys,tst]);
+
+  // Quick save — overwrite public/convoys.xml with auto-backup
+  const quickSave = useCallback(()=>{
+    if(!docRef.current)return;
+    const xml=serialize(docRef.current,convoys,npRef.current);
+    fetch('/api/save',{method:'POST',body:xml}).then(r=>r.json()).then(d=>{
+      if(d.ok){setMod(false);tst('Saved to public/convoys.xml (backup created)');}
+      else tst('Save error: '+d.error);
+    }).catch(e=>tst('Save failed: '+e.message));
+  },[convoys,tst]);
+
+  // Backups
+  const [backups, setBackups] = useState([]);
+  const [showBackups, setShowBackups] = useState(false);
+
+  const loadBackups = useCallback(()=>{
+    fetch('/api/backups').then(r=>r.json()).then(files=>{setBackups(files);setShowBackups(true);}).catch(()=>tst('Failed to load backups'));
+  },[tst]);
+
+  const restoreBackup = useCallback((file)=>{
+    fetch('/api/restore',{method:'POST',body:JSON.stringify({file})}).then(r=>r.json()).then(d=>{
+      if(!d.ok){tst('Restore error');return;}
+      // Reload the restored file
+      fetch('/convoys.xml?t='+Date.now()).then(r=>r.text()).then(txt=>{
+        loadXmlStr(txt,'convoys.xml');
+        setShowBackups(false);
+        tst('Restored from '+file);
+      });
+    }).catch(()=>tst('Restore failed'));
+  },[loadXmlStr,tst]);
 
   // Start new convoy
   const startNew = useCallback(()=>{
@@ -550,12 +585,13 @@ export default function ConvoyEditor() {
     if(e.ctrlKey&&e.code==='KeyZ'){e.preventDefault();undo();return;}
     if(e.ctrlKey&&e.code==='KeyY'){e.preventDefault();redo();return;}
     if(e.ctrlKey&&e.code==='KeyS'){e.preventDefault();saveFile();return;}
+    if(e.ctrlKey&&e.code==='KeyE'){e.preventDefault();quickSave();return;}
     if(e.code==='KeyV')setTool('select');if(e.code==='KeyA')setTool('add');
     if(e.code==='Enter'&&creating){finishNew();return;}
     if(e.code==='Escape'&&creating){setCreating(null);setTool('select');tst('Cancelled');return;}
     if((e.code==='Delete'||e.code==='Backspace')&&sc>=0&&sp>=0)delPt(sc,sp);
     if(sc>=0&&sp>=0){const pts=convoys[sc]?.points;if(!pts)return;if(e.code==='ArrowRight'||e.code==='ArrowDown')setSp((sp+1)%pts.length);if(e.code==='ArrowLeft'||e.code==='ArrowUp')setSp((sp-1+pts.length)%pts.length);}
-  };window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h);},[undo,redo,saveFile,sc,sp,convoys,delPt,creating,finishNew,tst]);
+  };window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h);},[undo,redo,saveFile,quickSave,sc,sp,convoys,delPt,creating,finishNew,tst]);
 
   const fitAll = useCallback(()=>{let mix=Infinity,max=-Infinity,miz=Infinity,maz=-Infinity;for(const c of convoys)for(const p of c.points){mix=Math.min(mix,p.x);max=Math.max(max,p.x);miz=Math.min(miz,p.z);maz=Math.max(maz,p.z);}if(mix===Infinity)return;const cv=cvRef.current;const rX=max-mix+2000,rZ=maz-miz+2000;setCam({x:(mix+max)/2,y:(miz+maz)/2,z:cv?Math.min(cv.width/rX,cv.height/rZ)*0.85:0.04});},[convoys]);
 
@@ -599,17 +635,18 @@ export default function ConvoyEditor() {
       {/* TOP BAR */}
       <div style={S.bar}>
         <div style={S.logo}>Convoy Editor <span style={{color:'#444',fontWeight:400}}>v2</span></div>
-        <button style={S.btn} onClick={openFile}>📂 Open</button>
-        <button style={{...S.btn,...(mod?S.bp:{})}} onClick={saveFile} disabled={!loaded}>💾 Save</button>
+        <button style={S.btn} onClick={openFile} title="Open XML file">📂</button>
+        <button style={{...S.btn,...(mod?S.bp:{})}} onClick={quickSave} disabled={!loaded} title="Ctrl+E — Quick save to public/">⚡</button>
+        <button style={S.btn} onClick={saveFile} disabled={!loaded} title="Ctrl+S — Download as file">💾</button>
+        <button style={S.btn} onClick={loadBackups} title="Restore from backup">↶</button>
         <div style={S.sep}/>
-        <button style={S.btn} onClick={startNew} disabled={!loaded}>＋ New Convoy</button>
+        <button style={S.btn} onClick={startNew} disabled={!loaded}>＋ New</button>
+        <button style={S.btn} onClick={loadRoads} title="Load roads file">🛣</button>
+        {roadsLoaded && <button style={{...S.btn,...(showRoads?{background:'#1a2520',borderColor:'#2a4530'}:{})}} onClick={()=>setShowRoads(v=>!v)} title="Toggle roads">{showRoads?'👁':'○'}</button>}
         <div style={S.sep}/>
-        <button style={S.btn} onClick={loadRoads}>🛣 Roads</button>
-        {roadsLoaded && <button style={{...S.btn,...(showRoads?{background:'#1a2520',borderColor:'#2a4530'}:{})}} onClick={()=>setShowRoads(v=>!v)}>{showRoads?'👁':'○'} Roads</button>}
-        <div style={S.sep}/>
-        <button style={S.btn} onClick={undo}>↩</button>
-        <button style={S.btn} onClick={redo}>↪</button>
-        <button style={S.btn} onClick={fitAll}>⌂</button>
+        <button style={S.btn} onClick={undo} title="Undo (Ctrl+Z)">↩</button>
+        <button style={S.btn} onClick={redo} title="Redo (Ctrl+Y)">↪</button>
+        <button style={S.btn} onClick={fitAll} title="Fit all">⌂</button>
         <div style={{marginLeft:'auto',fontFamily:'monospace',fontSize:10,color:'#555'}}>{loaded?`${convoys.length} convoys${roadsLoaded?` · ${roads.length} roads`:''}${mod?' · MOD':''}`:''}</div>
       </div>
 
@@ -732,6 +769,26 @@ export default function ConvoyEditor() {
           <div style={{display:'flex',gap:6,marginTop:10}}>
             <button style={{...S.btn,...S.bp,flex:1}} onClick={beginPlace}>Place Points on Map →</button>
             <button style={{...S.btn}} onClick={()=>setDlg(false)}>Cancel</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* BACKUPS DIALOG */}
+      {showBackups&&<div style={S.ml} onClick={()=>setShowBackups(false)}>
+        <div style={{...S.mb,width:420}} onClick={e=>e.stopPropagation()}>
+          <div style={{fontSize:14,fontWeight:700,color:'#d4842a',marginBottom:12,textTransform:'uppercase',letterSpacing:1}}>Backups</div>
+          {backups.length===0?<div style={{color:'#555',fontSize:12}}>No backups yet</div>:
+            <div style={{maxHeight:400,overflowY:'auto'}}>
+              {backups.map(f=>(
+                <div key={f} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid #1a1a1f'}}>
+                  <span style={{fontSize:11,fontFamily:'monospace',color:'#c8c5b8'}}>{f.replace('convoys_','').replace('.xml','')}</span>
+                  <button style={{...S.btn,fontSize:10}} onClick={()=>restoreBackup(f)}>Restore</button>
+                </div>
+              ))}
+            </div>
+          }
+          <div style={{marginTop:10}}>
+            <button style={S.btn} onClick={()=>setShowBackups(false)}>Close</button>
           </div>
         </div>
       </div>}
